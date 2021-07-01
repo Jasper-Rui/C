@@ -1,0 +1,30 @@
+#This is a comment
+
+file ./happy_birthday_geralt
+
+break invite_yennefer
+break invite_vesemir
+break geralt.c:1
+break triss.c:8
+
+
+run
+
+set var desire = 9999999
+continue
+
+
+set var c = 1
+set var d = 1
+
+continue
+
+
+set var memory = malloc(1000)
+continue
+
+
+set var letter->invitation=0
+
+continue
+
