@@ -1,0 +1,22 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+C:/Users/Jasper/Desktop/bit/github/New-to-C/C project July 26th/factorial.c
+stdio.h
+-
+assert.h
+-
+
+C:/Users/Jasper/Desktop/bit/github/New-to-C/C project July 26th/main.c
+stdio.h
+-
+assert.h
+-
+limits.h
+-
+
