@@ -1,5 +1,10 @@
-#ifndef __GAME_HEADER
-#define __GAME_HEADER
+//
+// Created by Jasper on 2021/7/29.
+//
+
+#ifndef UNTITLED1_GAME_H
+#define UNTITLED1_GAME_H
+
 
 #define ROW 3
 #define COL 3
@@ -18,4 +23,6 @@ void ComputerMove(char board[ROW][COL], int row, int col);
 
 char isWin(char board[ROW][COL], int row, int col);
 
-#endif
+int Is_Full(char board[ROW][COL], int row, int col);
+
+#endif //UNTITLED1_GAME_H

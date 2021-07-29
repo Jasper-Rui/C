@@ -1,3 +1,7 @@
+//
+// Created by Jasper on 2021/7/29.
+//
+
 #include "game.h"
 
 
@@ -39,8 +43,8 @@ void DisplayBoard(char board[ROW][COL], int row, int col)
                 if(j < col - 1)
                 {
                     printf("|");
-                }                
-            }            
+                }
+            }
         }
         printf("\n");
     }
@@ -54,7 +58,7 @@ void PlayerMove(char board[ROW][COL], int row, int col)
 
     int x = 0;
     int y = 0;
-    
+
     while(1)
     {
         printf("Please enter a movement:");
@@ -63,7 +67,7 @@ void PlayerMove(char board[ROW][COL], int row, int col)
         {
             if(board[x - 1][y - 1] == ' ')
             {
-                board[x - 1][y - 1] == '*';
+                board[x - 1][y - 1] = '*';
                 break;
             }
             else
@@ -73,8 +77,8 @@ void PlayerMove(char board[ROW][COL], int row, int col)
         }
         else
         {
-            printf("Invalid cordinate, please enter again.\n");
-        }       
+            printf("Invalid coordinate, please enter again.\n");
+        }
     }
 }
 
@@ -91,11 +95,26 @@ void ComputerMove(char board[ROW][COL], int row, int col)
         y = rand()%col;
         if(board[x][y] == ' ')
         {
-            board[x][y] == '#';
+            board[x][y] = '#';
             break;
         }
     }
 }
+
+int Is_Full(char board[ROW][COL], int row, int col){
+    int i = 0;
+    int j = 0;
+
+    for (i = 0; i < row; i++) {
+        for(j = 0; j < col; j++){
+            if(board[i][j] == ' '){
+                return 0;
+            }
+        }
+    }
+    return 1;
+}
+
 
 
 //5 different situations
@@ -108,5 +127,33 @@ char isWin(char board[ROW][COL], int row, int col)
     // 1. win or not
     // 2. draw
     // 3. continue
+
+    int i = 0;
+    //row
+    for (i = 0; i < row; i++) {
+        if(board[i][0] == board[i][1] && board[i][1] == board[i][2] && board[i][0] != ' '){
+            return board[i][0];
+        }
+    }
+    // col
+    for (i = 0; i < col; i++) {
+        if(board[0][i] == board[1][i] && board[1][i] == board[2][i] && board[0][i] != ' '){
+            return board[0][i];
+        }
+    }
+
+    if(board[0][0] == board[1][1] && board[1][1] == board[2][2] && board[1][1] != ' '){
+        return board[1][1];
+    }
+    if(board[0][2] == board[1][1] && board[1][1] == board[2][0] && board[1][1] != ' '){
+        return board[1][1];
+    }
+
+    //draw
+    if(Is_Full(board, ROW, COL)){
+        return 'Q';
+    }
+    //continue game
+    return 'C';
 
 }
