@@ -1,4 +1,4 @@
-# New-to-C
+# C Projects
 This repository will record the path I become an expert to C!
 Haha
 
