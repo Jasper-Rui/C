@@ -1,0 +1,20 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+C:/Users/Jasper/Desktop/bit/note/Saolei/game.c
+game.h
+C:/Users/Jasper/Desktop/bit/note/Saolei/game.h
+
+C:/Users/Jasper/Desktop/bit/note/Saolei/game.h
+stdio.h
+-
+stdlib.h
+-
+time.h
+-
+
