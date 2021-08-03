@@ -1,0 +1,1 @@
+Question1: switch all elements with 2 same length arr
