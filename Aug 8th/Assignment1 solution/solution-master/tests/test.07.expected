@@ -1,0 +1,6 @@
+Adding transaction: 11235 Alice_Q_Public Bob_X_Private 150000 20
+Adding transaction: 12358 Carol_Y_Incredible Dave_Z_Particle 350000 40
+Block mined: 1 0 0x00000000 2
+11235 Alice_Q_Public Bob_X_Private 150000 20
+12358 Carol_Y_Incredible Dave_Z_Particle 350000 40
+0x00000055 0x00cdc610

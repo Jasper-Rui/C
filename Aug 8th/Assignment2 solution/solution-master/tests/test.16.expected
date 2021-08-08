@@ -1,0 +1,20 @@
+Adding transaction: 11235 Alice_Q_Public Bob_X_Private 150000 20
+Adding transaction: 12358 Carol_Y_Incredible Dave_Z_Particle 350000 40
+Adding transaction: 23581 Eve_N_Star Fred_F_Filibuster 1350000 10
+Adding transaction: 35813 Gina_T_Positron Hugh_H_Haliboo 11350000 100
+Adding transaction: 58132 Bob_X_Private Alice_Q_Public 150000 20
+Adding transaction: 81321 Dave_Z_Particle Carol_Y_Incredible 350000 40
+Adding transaction: 13213 Fred_F_Filibuster Eve_N_Star 1350000 10
+Block mined: 1 0 0x00000000 5
+11235 Alice_Q_Public Bob_X_Private 150000 20
+12358 Carol_Y_Incredible Dave_Z_Particle 350000 40
+23581 Eve_N_Star Fred_F_Filibuster 1350000 10
+35813 Gina_T_Positron Hugh_H_Haliboo 11350000 100
+58132 Bob_X_Private Alice_Q_Public 150000 20
+0x00000101 0x006aa499
+Adding transaction: 32134 Hugh_H_Haliboo Gina_T_Positron 11350000 100
+Block mined: 2 1 0x006aa499 3
+81321 Dave_Z_Particle Carol_Y_Incredible 350000 40
+13213 Fred_F_Filibuster Eve_N_Star 1350000 10
+32134 Hugh_H_Haliboo Gina_T_Positron 11350000 100
+0x00000079 0x003faa58

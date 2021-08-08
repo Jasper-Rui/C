@@ -1,0 +1,58 @@
+Adding transaction: 1 A B 150000 20
+Adding transaction: 2 B C 150000 20
+Adding transaction: 3 C D 150000 20
+Adding transaction: 4 D E 150000 20
+Adding transaction: 5 E F 150000 20
+Adding transaction: 6 F G 150000 20
+Adding transaction: 7 G H 150000 20
+Adding transaction: 8 H I 150000 20
+Adding transaction: 9 I J 150000 20
+Adding transaction: 10 J K 150000 20
+Adding transaction: 11 K L 150000 20
+Adding transaction: 12 L M 150000 20
+Adding transaction: 13 M N 150000 20
+Adding transaction: 14 N O 150000 20
+Adding transaction: 15 O P 150000 20
+Adding transaction: 16 P Q 150000 20
+Adding transaction: 17 Q R 150000 20
+Adding transaction: 18 R S 150000 20
+Adding transaction: 19 S T 150000 20
+Adding transaction: 20 T U 150000 20
+Adding transaction: 21 U V 150000 20
+Adding transaction: 22 V W 150000 20
+Adding transaction: 23 W X 150000 20
+Adding transaction: 24 X Y 150000 20
+Adding transaction: 25 Y Z 150000 20
+Adding transaction: 26 Z A 150000 20
+Block mined: 1 0 0x00000000 14
+1 A B 150000 20
+2 B C 150000 20
+3 C D 150000 20
+4 D E 150000 20
+5 E F 150000 20
+6 F G 150000 20
+7 G H 150000 20
+8 H I 150000 20
+9 I J 150000 20
+10 J K 150000 20
+11 K L 150000 20
+12 L M 150000 20
+13 M N 150000 20
+14 N O 150000 20
+0x00000085 0x00035c08
+Block mined: 2 1 0x00035c08 12
+15 O P 150000 20
+16 P Q 150000 20
+17 Q R 150000 20
+18 R S 150000 20
+19 S T 150000 20
+20 T U 150000 20
+21 U V 150000 20
+22 V W 150000 20
+23 W X 150000 20
+24 X Y 150000 20
+25 Y Z 150000 20
+26 Z A 150000 20
+0x00000154 0x00f57c3d
+Block mined: 3 2 0x00f57c3d 0
+0x0000004b 0x00d5a4c9

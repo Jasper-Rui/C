@@ -1,0 +1,8 @@
+TRX 11235 Alice_Q_Public Bob_X_Private 150000 20
+TRX 12358 Carol_Y_Incredible Dave_Z_Particle 350000 40
+BLK 1 0 0x00000000 1
+11235 Alice_Q_Public Bob_X_Private 150000 20
+0x00000065 0x006a00e3
+MINE
+END
+
