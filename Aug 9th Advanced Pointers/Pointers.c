@@ -66,19 +66,41 @@ int main() {
 
 	printf("\n");
 	int ar1[] = { 1,2,3,4,5 };
-	int ar2[] = { 2,3,4,5,6 };
-	int ar3[] = { 3,4,5,6,7 };
-
+	int ar2[] = { 2,3,4,5,6,7 };
+	int ar3[] = { 3,4,5,6,7,8,9 };
 	int* parr[] = { ar1, ar2, ar3 };
 
-	for (i = 0; i < 3; i++)
+	int s = sizeof(parr) / sizeof(parr[0]);
+	int sz = sizeof(ar1) / sizeof(ar1[0]);
+	int sz1 = sizeof(ar2) / sizeof(ar1[0]);
+	int sz2 = sizeof(ar3) / sizeof(ar1[0]);
+	
+	//normally
+	/*int ar1[] = { 1,2,3,4,5 };
+	int ar2[] = { 2,3,4,5,6 };
+	int ar3[] = { 3,4,5,6,7 };
+	is fine*/
+
+
+	
+
+	for (i = 0; i < s; i++)
 	{
 		int j = 0;
-		for (j = 0; j < 5; j++)
+		int border = sz;
+		if (i == 1) {
+			border = sz1;
+		}
+		if (i == 2) {
+			border = sz2;
+		}
+
+		for (j = 0; j < border; j++)
 		{
 			printf("%d ", parr[i][j]);
 			//p[i] == *(p + i)
 			//parr[i][j] == *(parr[i] + j)
+			//or *(*(parr + i) + j)
 		}
 		printf("\n");
 	}
