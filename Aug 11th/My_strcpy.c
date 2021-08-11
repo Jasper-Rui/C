@@ -55,6 +55,20 @@ void my_strcpy_improved_again_second(char* des, const char* src) {
 	//when *src  = '\0', the ASCII for that is 0 -> false. so the loop will break
 }
 
+//How can we check the size of input, cuz we may not have enough space for des
+//or we want return the des instead of using void function
+
+char* my_strcpy_improved_again_third(char* des, const char* src) {
+	assert(des && src);
+	char* result = des;
+	while (*des++ = *src++) {
+		;
+	}
+	//when *src  = '\0', the ASCII for that is 0 -> false. so the loop will break
+
+	return result;
+}
+
 
 
 int main() {
@@ -128,5 +142,36 @@ int main() {
 	//or
 	const int* const pppp = &num;
 
+	printf("\n");
+
+	char arr6[] = "abcdefffff";
+	char* result = my_strcpy_improved_again_third(arr2, arr6);
+	printf("%s\n", result);
+
+
+	printf("\n");
+	char ar[] = "abcdefg";
+	char ar1[3] = { 0 };
+	//result = my_strcpy_improved_again_third(ar, ar1)l//will not work
+	//we have to make sure the des has enough space for a copy
+
+	//another wrong example
+	char error1[] = "avcsads";
+	char* error2 = "xxxxxxxxxxxx"; //here it's a constant string stored in constant area, it's unable to change
+
+	//target space must be changable
+
+	char arrrr[] = "abcdef";
+	const char* arrrrrrrr = "qwer";
+	//put 'q' address into arrrrrrrr
+
+	printf("%s \n", arrrr);
+	printf("%s \n", arrrrrrrr);
+	//if we use &arrrr or *arrrrrrrr, it will be the 1st element of that string
+
+
+	printf("%s \n", &arrrr);
+
+	printf("%c \n", *arrrrrrrr);
 	return 0;
 }
