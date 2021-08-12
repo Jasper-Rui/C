@@ -12,7 +12,7 @@ int my_strlen(char* input) {
 	return count;
 }
 
-int my_strlen_improve(const char* input) {
+unsigned int my_strlen_improve(const char* input) {//or size_t my_strlen_improve(const char* input)
 	assert(input != NULL);
 	int count = 0;
 	while (*input++){
