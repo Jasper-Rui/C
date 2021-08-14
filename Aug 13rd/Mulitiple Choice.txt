@@ -1,0 +1,36 @@
+Q1：
+
+#include <stdio.h>
+int i;
+int main()
+{
+    i--;
+    if (i > sizeof(i))
+    {
+        printf(">\n");
+    }
+    else
+    {
+        printf("<\n");
+    }
+    return 0; 
+}
+
+A.>
+B.<
+C.No output
+D.Error
+
+//Correct is A
+//the return type for sizeof(I) is unsigned int
+//so i will changed to unsigned int from int
+//int i; default i = 0;
+//after i-- -> i = -1
+//unsigned int for i -> 11111111111111111111111111111111 (twos complement)
+//for unsigned int, original form == ones == twos >>>>>lager than 1
+//so it's ' > '
+
+
+Q2:
+
+
