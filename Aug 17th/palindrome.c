@@ -1,13 +1,10 @@
 #include <stdio.h>
 #include <assert.h>
+#include <string.h>
+
 //Question:
-//move k elements to the end of the string
-//example: ABCD -> 2 -> CDAB
+//is abcde the same after bcdea with reverse k times?
 
-
-//1: Get inpunt and store into an array
-//2: Get the k numbers that user want to move
-//3: 
 unsigned int my_strlen_improve(const char* input) {//or size_t my_strlen_improve(const char* input)
 	assert(input != NULL);
 	int count = 0;
@@ -32,23 +29,33 @@ void reverse_string(char* string, int k){
         string[len - 1] = tmp;//Change BCDD to BCDA
         right--;
     }
-    
-    //assume input is ABCD
-    //K = 2
-    //1st round:
-    //BCDA
-    //2nd round:
-    //tmp = B; CDAA;
-    //right-- -> 0 -> false
 }
 
 
 int main(){
-    char arr[10] = {0};
-    int k = 0;
-    gets(arr);
-    scanf("%d" ,&k);
-    reverse_string(arr, k);
-    printf("%s", arr);
-    return 0;
+
+
+    char input1[100];
+    char input2[100];
+    gets(input1);
+    gets(input2);
+    int times1 = my_strlen_improve(input1);
+    int times2 = my_strlen_improve(input2);
+    int n;
+    if(times1 != times2){
+        printf("0\n");
+    }
+    else{
+        for(n = 0; n < times1; n++){
+            if(strcmp(input1, input2) != 0){
+                reverse_string(input2, 1);
+            }
+            else if(strcmp(input1, input2) == 0){
+                break;
+            }
+        }
+        printf("%d \n", n);
+    }
+
+
 }
