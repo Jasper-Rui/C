@@ -31,6 +31,16 @@ void reverse_string(char* string, int k){
     }
 }
 
+//a better way
+int findRound(const char * src, char * find)
+{
+	char tmp[256] = { 0 }; 
+	strcpy(tmp, src); 
+	strcat(tmp, src); 
+	return strstr(tmp, find) != NULL; 
+}
+
+
 
 int main(){
 
