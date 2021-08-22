@@ -54,10 +54,18 @@ int main(){
 
     //function name is signal
     //there are 2 variables
-    //one is int, one is the return value from void(*)(int)
-    //then they will be the input for signal functions
-    //then *signal(var1, var1) to get the address, it's an address for a function as void type
-    //then we call it will input (int)
+    //one is int, one is from void(*)(int)
+    
+
+    //return type is void(*)(int)
+
+
+    //summary
+    //for a function
+    //3 params
+    //1 function name
+    //2 function input variables
+    //3 function return type
 
 
 
