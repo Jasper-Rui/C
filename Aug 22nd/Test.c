@@ -24,9 +24,13 @@ int main(){
     int * d = &c;
     int ** f = &d;
 
+    int* arrr[10];
+
     test1(f);
     //or
     test1(&d);
+
+    test1(arr);//here arr is a pointers to an pointers array
 
 
 
