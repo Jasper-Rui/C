@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 int cmpint(const void* var1, const void* var2){
     return *(int*)var1 - *(int*)var2;
@@ -33,10 +34,24 @@ struct Student
     int age;
 };
 
-int cmp_struct(const void* var1, const void* var2){
+int cmp_struct_age(const void* var1, const void* var2){
     return (*(struct Student*)var1).age - (*(struct Student*)var2).age;
     //or
     //return ((struct Student*)var1)->age - ((struct Student*)var2)->age;
+}
+
+//if we want sort in in the opposite wat
+int cmp_struct_age(const void* var1, const void* var2){
+    return (*(struct Student*)var2).age - (*(struct Student*)var1).age;
+}
+
+
+int cmp_struct_name(const void* var1, const void* var2){
+    return strcmp((*(struct Student*)var1).name ,(*(struct Student*)var2).name);
+    //strcmp is to compare each index of a string
+    //abcd
+    //adc
+    //at position 2, d is larger than b so adc > abcd
 }
 
 
@@ -48,8 +63,8 @@ void test2(){
     //here we sort the structs by age from some to large
     int sz = sizeof(stu)/ sizeof(stu[0]);
 
-    qsort(stu, sz, sizeof(stu[0]), cmp_struct);
-
+    qsort(stu, sz, sizeof(stu[0]), cmp_struct_age);
+    qsort(stu, sz, sizeof(stu[0]), cmp_struct_name);
 
     
 }
