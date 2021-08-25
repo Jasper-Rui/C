@@ -41,7 +41,7 @@ int cmp_struct_age(const void* var1, const void* var2){
 }
 
 //if we want sort in in the opposite wat
-int cmp_struct_age(const void* var1, const void* var2){
+int cmp_struct_age_opposite(const void* var1, const void* var2){
     return (*(struct Student*)var2).age - (*(struct Student*)var1).age;
 }
 
@@ -69,9 +69,49 @@ void test2(){
     
 }
 
+void Swap(char* var1, char* var2, int width){
+    for(int i = 0; i < width; i++){
+        char tmp = *var1;
+        *var1 = *var2;
+        *var2 = tmp;
+        var1++;
+        var2++;
+    }
+
+}
+
+void my_bubble_sort(void* base, int size, int width, int (*cmp)(const void*, const void*)){
+    int i = 0;
+    for(i = 0; i < size; i++){
+        int j = 0;
+        for(j = 0; j < size - 1 - i; j++){
+            //since base here is a void* type, we can't just add j to find the target
+            if(cmp((char*)base + j * width, (char*)base + (j + 1) * width) > 0 ){
+                //swap
+                Swap((char*)base + j * width, (char*)base + (j + 1) * width, width);
+                //here, swap still do not know which type we want to swap
+                //but key idea is we know how many byte AKA width
+            }
+        }
+    }
+
+}
+
+//my+bubble_qsort with integers
+void test3(){
+    int arr[] = { 10,9,8,7,6,5,4,3,2,1 };
+    int sz = sizeof(arr) / sizeof(arr[0]);
+    printf("Array before my_bubble_qsort is: \n");
+    printArray(arr, sz);
+
+    my_bubble_sort(arr, sz, sizeof(arr[0]), cmpint);
+    printf("\nArray before my_bubble_qsort is: \n");
+    printArray(arr, sz);
+}
+
 int main () {
     
-
+    test3();
 
 
     return 0;
