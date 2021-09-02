@@ -52,6 +52,37 @@ int main (){
     printf("%d\n", strlen(&str[0] + 1)); //same as strlen(str)
 
 
+    
+    //-------------------------------------------------------------------------------------------------------------------------
+    printf("\n");
+    printf("\n");
+    printf("\n");
+
+    char arrr[] = "abcdef"; // -> "ancdef\0"
+
+    printf("%d\n", sizeof(arrr)); // 7
+    printf("%d\n", sizeof(arrr + 0)); // -> arrr[0] -> 1]st var address -> 4
+    printf("%d\n", sizeof(*arrr)); // 1
+    printf("%d\n", sizeof(arrr[1])); // 1
+    printf("%d\n", sizeof(&arrr)); //4 or 8
+    printf("%d\n", sizeof(&arrr + 1)); // jump over the arrr, but it is still an address -> 4  / 8
+    printf("%d\n", sizeof(&arrr[0] + 1)); // the address of arr[1] 4 / 8
+
+    printf("\n");
+    printf("\n");
+    printf("\n");
+    printf("%d\n", strlen(arrr)); // 6
+    printf("%d\n", strlen(arrr + 0)); // 6
+    //printf("%d\n", strlen(*arrr)); //error 
+    //printf("%d\n", strlen(arrr[1])); //error
+    printf("%d\n", strlen(&arrr)); // 6
+    // printf("%d\n", strlen(&arrr + 1)); // error
+    printf("%d\n", strlen(&arrr[0] + 1)); // 5 "bcde f"
+
+
+
+
+
 
 
 
