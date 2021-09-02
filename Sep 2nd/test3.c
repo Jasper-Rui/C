@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 
 int main (){
 
@@ -25,6 +26,32 @@ int main (){
     // &arr + 1 -> a b c d e f arr is here now
     //but it is still an address
     printf("%d\n", sizeof(&arr[0] + 1)); //address of arr[1]
+
+    //-------------------------------------------------------------------------------------------------------------------------
+    printf("\n");
+    printf("\n");
+    printf("\n");
+    char str[] = {'a', 'b', 'c', 'd', 'e', 'f'};
+    printf("%d\n", strlen(str)); // there is no '\0' in the str array, so for some compiler it will be an unexpected result
+    //strlen is very stubborn, it will keep going until a '\0' is found 
+    printf("%d\n", strlen(str + 0)); // same as last one
+    //printf("%d\n", strlen(*str)); //segmentation falut
+    //here (*str) is 'a' in ASCII is 97 -> a wild pointer
+    //so strlen will assume user passed an wild poineter with 97
+
+    //printf("%d\n", strlen(str[1])); //segmentation falut, here we passed str[1] -> 'b' -> 98
+    //strlen() need an address, not an actual value
+
+    
+    printf("%d\n", strlen(&str)); //same as strlen(str)
+    //size_t strlen(const char *);
+    //but with &str -> char (*) []
+    //however it is still the address of the array
+
+    printf("%d\n", strlen(&str + 1)); //start with what after 'f', and everything after 'f' is unknown
+    printf("%d\n", strlen(&str[0] + 1)); //same as strlen(str)
+
+
 
 
 
