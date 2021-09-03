@@ -80,6 +80,21 @@ int main (){
     printf("%d\n", strlen(&arrr[0] + 1)); // 5 "bcde f"
 
 
+    printf("\n");
+    printf("\n");
+    printf("\n");
+    
+    const char* p = "abcdef";
+    printf("%d\n", sizeof(p)); // 4 / 8, p here is a pointer variable
+    printf("%d\n", sizeof(p + 1)); // 4 / 8, p here is a pointer variable
+    printf("%d\n", sizeof(*p)); // 1, *p here is the 1st element -> 'a' 
+    printf("%d\n", sizeof(p[0])); // 1 same as above
+    printf("%d\n", sizeof(&p)); // 4 or 8
+    printf("%d\n", sizeof(&p + 1)); // 4 or 8
+    printf("%d\n", sizeof(&p[0] + 1)); // 4 / 8
+
+
+
 
 
 
