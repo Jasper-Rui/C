@@ -38,6 +38,23 @@ int main(){
     printf("%d\n", sizeof(*(a[0] + 1)));// an integer -> 4
     printf("%d\n", sizeof(a + 1)); //a[1] -> it's an address -> 4 / 8
 
+    printf("%d\n", sizeof(*(a + 1))); // *(a+1) -> a[1] -> 4 element -> 4 * 4 -> 16 -> it's sizeof(a[1])
+    //here a[1] is the name of an 1 d array
+    //so here it's the address of whole array in the second row
+
+    printf("%d\n", sizeof(&a[0] + 1));
+    //a[0] -> 1st row name
+    //&a[0] -> 1st row address
+    //&a[0] + 1 -> get the address of 1st row and add the same size of &a[0]
+    //-> &a[1]
+    //-> 4/8 (it's an address)
+
+    printf("%d\n", sizeof(*(&a[0] + 1)));
+    //*(&a[1]) -> a[1] -> 16
+    printf("%d\n", sizeof(*a)); // -> 16 -> 1st row
+    printf("%d\n", sizeof(a[3])); // out of boundary, random value in c
+
+
 
 
 
