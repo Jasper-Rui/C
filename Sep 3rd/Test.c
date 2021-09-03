@@ -55,6 +55,7 @@ int main(){
     printf("%d\n", sizeof(a[3])); // out of boundary, but in c it will go to the address and check it for u
     //if the a[4] exist, then it will print 16 as well, it will not access directly to that part
     //but it will check if it exists
+    
 
 
 
