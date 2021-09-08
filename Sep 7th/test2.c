@@ -7,11 +7,12 @@ int main () {
     //add 1 is add the same length of array
     //so ptr1 pointes what after 10
     int * ptr2 = (int*)(*(a + 1));
-    //a + 1 here is a[0] + 1 -> a[1]
-    //*a[1] -> a[1][0] -> 6
+    //*(a + 1) here is a[0] + 1 -> a[1] -> we get the address for the second row
+
     
 
     printf("%d, %d", *(ptr1 - 1), *(ptr2 - 1));
+    //*(ptr2 - 1) -> 
     //result is 10, 5
 
     return 0;
