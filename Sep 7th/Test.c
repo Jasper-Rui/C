@@ -25,5 +25,8 @@ int main () {
     //convert to int* -> address -> 0x0012ff41
     
 
+    //so here is 0x02000000
+    // -> 2000000
+
     return 0;
 }
