@@ -22,6 +22,7 @@ int main () {
     //be careful, strlen return type is size_t -> unsigned int -> only positive
 
     //both sizeof / size_t -> unsigned int 
+    //so be careful here when calculating size_t
 
     return 0;
 }
