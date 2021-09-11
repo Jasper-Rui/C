@@ -10,18 +10,36 @@ int* sort(int* des, int* arr1, int* arr2, int size1, int size2){
     assert(size2);
     int* res = des;
     
-    while(size1 + size2 - 1){
-        if(*arr1 < *arr2 && size1 != 0){
+    while(size1 + size2){
+        if((*arr1 < *arr2) && (size1 != 0)){
             *des = *arr1;
-            *des++;
-            *arr1++;
+            des++;
+            arr1++;
             size1--;
         }
-        else if(*arr1 > *arr2 && size2 != 0) {
+        else if((*arr1 > *arr2) && (size2 != 0)) {
             *des = *arr2;
-            *des++;
-            *arr2++;
+            des++;
+            arr2++;
             size2--;
+        }
+        else if(size1 == 0 && size2 != 0){
+            *des = *arr2;
+            des++;
+            arr2++;
+            size2--;
+        }
+        else if(size2 == 0 && size1 != 0){
+            *des = *arr1;
+            des++;
+            arr1++;
+            size1--;
+        }
+        else if(*arr1 == *arr2){
+            *des = *arr1;
+            des++;
+            arr1++;
+            size1--;
         }
     }
     return res;
@@ -37,11 +55,11 @@ int main () {
     
     int i = 0;
     for(i = 0; i < size1; i++){
-        scanf("%d ", &arr1[i]);
+        scanf("%d", &arr1[i]);
     }
     
     for(i = 0; i < size2; i++){
-        scanf("%d ", &arr2[i]);
+        scanf("%d", &arr2[i]);
     }
     
     int result[size1 + size2];
