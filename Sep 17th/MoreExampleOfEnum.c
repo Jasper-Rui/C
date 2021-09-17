@@ -9,10 +9,10 @@ enum OPTION {
 };
 
 void menu () {
-    printf("****************************************");
-    printf("********1. add       2. sub  ***********");
-    printf("********3. mul       4. div  ***********");
-    printf("********0. Exit              ***********");
+    printf("****************************************\n");
+    printf("********1. add       2. sub  ***********\n");
+    printf("********3. mul       4. div  ***********\n");
+    printf("********0. Exit              ***********\n");
 }
 
 int main () {
@@ -32,7 +32,9 @@ int main () {
             break;
         case Div:
             break;
-        default Exit:
+        case Exit:
+            break;
+        default :
             break;
         }
     } while (input);
