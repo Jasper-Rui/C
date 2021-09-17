@@ -1,5 +1,13 @@
 #include <stdio.h>
 
+enum OPTION {
+    Exit,
+    Add,
+    Sub,
+    Mul,
+    Div
+};
+
 void menu () {
     printf("****************************************");
     printf("********1. add       2. sub  ***********");
@@ -16,15 +24,15 @@ int main () {
 
         switch (input)
         {
-        case 1:
+        case Add:
             break;
-        case 2:
+        case Sub:
             break;
-        case 3:
+        case Mul:
             break;
-        case 4:
+        case Div:
             break;
-        default:
+        default Exit:
             break;
         }
     } while (input);
