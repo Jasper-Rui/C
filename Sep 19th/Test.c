@@ -16,27 +16,25 @@ int convertToNumber(char* arr){
             sum2 += sum1;
         }
         else if((*arr) == 88){
+            //88 in ASCII represent character 'X'
             sum1 += 10;
             sum2 += sum1;
         }
         *arr++;
     }
     *arr--;
-    //88 in ASCII represent character 'X'
-    if((*arr) != 88){
-        if(sum2 % (*arr - '0') == 0) return 1;
-        else return 0;
+    //test if we find a valid sum2
+    if(sum2 % 11 == 0) {
+         return 1;
     }
-    else{
-        if(sum2 % 11 == 0) return 1;
-        else return 0;
+    else {
+        return 0;
     }
 }
 
 int main () {
-    char arr[20];
-    //while(scanf("%[^\n]s", &arr) != EOF){
-    while(gets(arr) != EOF){   
+    char arr[1000];
+    while(scanf(" %[^\n]s", &arr) != EOF){  
         int result = convertToNumber(arr);
         if(result == 1){
             printf("%s is valid\n", arr);
@@ -46,7 +44,6 @@ int main () {
             printf("%s is invalid\n", arr);
             memset(arr, 0, sizeof arr);//reset arr[20] to null
         }
-        break;
     }
     return 0;
 }
