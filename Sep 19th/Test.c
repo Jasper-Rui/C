@@ -46,15 +46,21 @@ int main () {
     char arr[80];
     //create an array of 80
     FILE *fp;
+
+    /* opening file for reading */
     fp = fopen("ISBN.dat", "r");
 
     while (feof(fp) != EOF) 
-    //end of file
     {
         fgets(arr, 80, fp);
         int len = strlen(arr);
-        arr[len-2] = '\0';
-        //put a \0 to avoid unexpected errors
+        arr[len - 2] = '\0';
+        //the reason why put a '\0' at len - 2 is
+        //len - 3 is the last digit of the string
+        //the last character in each line is \n, if we don't put \0 after each line
+        //it will become an infinity loop
+        //for len - 2 -> the index for \n is len - 1, and we put one index before that
+        
 
         //if we meet "Done!" then end the program
         if(strcmp("Done!", arr) == 0)
@@ -65,6 +71,11 @@ int main () {
         else
             printf("%s is invalid\n", arr);
     }
+
+    fclose(fp);
+    //close the file
+
+
     /*while(scanf(" %[^\n]s", &arr) != EOF){   // step 1 read input
         int result = convertToNumber(arr);   //judge if it's a valid isbn number
         if(result == 1){
@@ -76,5 +87,6 @@ int main () {
             memset(arr, 0, sizeof arr);//reset arr[80] to null
         }
     }*/
+
     return 0;
 }
