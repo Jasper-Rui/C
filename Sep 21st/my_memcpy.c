@@ -13,7 +13,11 @@ void* my_memcpy (void * des, const void * src, size_t sz){
 }
 
 void * my_memmove (void * des, const void * src, size_t sz){
-    
+    void* temp = des;
+    while(sz--){
+        char temp = *(char*)src;
+    }
+    return temp;
 }
 
 

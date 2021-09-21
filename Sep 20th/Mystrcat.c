@@ -15,10 +15,7 @@ char* my_strcat(char* des, const char* src){
     while(*des++ = *src++){
         ;
     }
-
     return temp;
-
-
 }
 
 int main () {
