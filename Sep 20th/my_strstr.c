@@ -20,6 +20,8 @@ char * my_strstr(char * str1, char * str2){
         s1 = cp;
         s2 = str2;
         while((*s2 != '\0') && (*s1 != '\0') && (*s1 == *s2)){
+            //or
+            //while(*s2 && *s1 && (*s1 == *s2)){
             s1++;
             s2++;
         }
