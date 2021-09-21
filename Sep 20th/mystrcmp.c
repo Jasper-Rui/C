@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <string.h>
+#include <assert.h>
+
 
 
 void set (int * arr, int sz){
@@ -10,6 +12,7 @@ void set (int * arr, int sz){
 }
 
 int my_strcmp (const char * arr1, const char * arr2){
+    assert(arr1 && arr2);
     while(*arr1 == *arr2){
         if(*arr1 == '\0'){
             return 0;
@@ -49,5 +52,7 @@ int main () {
     else{
         printf("=\n");
     }
+    //all strcmp, strcat, strcpy are not safe
+    //so we will use strncmp, strncat, strncpy instead
     return 0;
 }
