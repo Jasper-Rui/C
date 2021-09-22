@@ -18,9 +18,6 @@ void * my_memory(void * des, const void * src, size_t count){
     else{
         while(count--){
             *((char*)des + count)= *((char*)src + count);
-            /*des = (char*)des + count;
-            src = (char*)src + count;
-            *(char*)des = *(char*)src;*/
         }
     }
     return temp;
@@ -29,7 +26,8 @@ void * my_memory(void * des, const void * src, size_t count){
 
 int main () {
     int arr1[10] = {1,2,3,4,5,6,7,8,9,10};
-    my_memory(arr1 + 2, arr1, 4 * sizeof(int));
+    //my_memory(arr1 + 2, arr1, 4 * sizeof(int));
+    my_memory(arr1, arr1 + 2, 4 * sizeof(int));
     for(int i = 0; i < 10; i++){
         printf("%d ", arr1[i]);
     }
