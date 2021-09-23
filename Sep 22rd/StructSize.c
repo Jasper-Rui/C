@@ -32,9 +32,9 @@ struct S4 {
 
 
 struct S5 {
-    double d1; // 8 8 8 
-    struct S4 s;// 16 16 16
-    int a; // 4 8 4
+    char c1; // 1 8 1 -> 8
+    struct S4 s;// 16 16 16 -> 24
+    double a; // 8 16 8 -> 32
 };
 
 // -> 32
