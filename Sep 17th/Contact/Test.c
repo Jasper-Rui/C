@@ -1,7 +1,7 @@
 #include "Contact.h"
 
 enum OPTION {
-    exit,
+    Exit,
     add,
     del,
     search,
@@ -33,6 +33,7 @@ int main () {
         switch (input)
         {
         case add:
+            AddContact(&con);
             break;
         case del:
             break;
@@ -41,13 +42,15 @@ int main () {
         case modify:
             break;
         case show:
+            ShowContact(&con);
             break;
         case sort:
             break;
-        case exit:
+        case Exit:
             printf("Exit \n");
             break;
         default :
+            printf("Wrong Input \n");
             break;
         }
     } while (input);
