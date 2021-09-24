@@ -42,6 +42,7 @@ int main () {
             SearchContact(&con);
             break;
         case modify:
+            ModifyContact(&con);
             break;
         case show:
             ShowContact(&con);

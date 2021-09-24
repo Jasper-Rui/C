@@ -97,3 +97,26 @@ void SearchContact(const struct Contact * pc){
     }
 }
 
+
+void ModifyContact(struct Contact * pc){
+    char name[NAME_MAX];
+    printf("Please enter a name to modify: ");
+    scanf("%s", name);
+    int pos = FindContactByName(pc, name);
+    if(pos == -1){
+        printf("The name is not exist on the contact list.\n");
+    }
+    else{
+        printf("Print enter a new name: ");
+        scanf("%s", pc -> data[pos].name);
+        printf("Print enter the new age: ");
+        scanf("%d", &(pc -> data[pos].age)); 
+        printf("Print enter the new gender: ");
+        scanf("%s", pc -> data[pos].sex);
+        printf("Print enter the new telephone number: ");
+        scanf("%d", pc -> data[pos].tel);
+        printf("Print enter the new address: ");
+        scanf("%s", pc -> data[pos].address);
+        printf("Successfully Modified\n");
+    }
+}

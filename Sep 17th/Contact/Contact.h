@@ -45,4 +45,7 @@ int FindContactByName(struct Contact * pc, char name[]);
 
 //search contact
 void SearchContact(const struct Contact * pc);
+
+//Modify Contact
+void ModifyContact(struct Contact * pc);
 #endif
