@@ -36,3 +36,45 @@ void ShowContact(struct Contact * pc){
                 pc -> data[i].age, pc -> data[i].sex, pc -> data[i].tel, pc -> data[i].address);
     }
 }
+
+int FineContactByName(struct Contact * pc, char name[]){
+    int i = 0;
+    for(i = 0; i < pc->sz; i++){
+        if(strcmp(pc->data[i].name, name) == 0){
+            return i;
+        }
+    }
+    //the name does not exist
+    return -1;
+}
+
+
+
+
+
+void DelContact(struct Contact * pc){
+    //1 get the target
+    char name[NAME_MAX] = {0};
+    printf("Please enter the name you want delete: ");
+    scanf("%s", name);
+
+    //2 find the target
+    int pos = FineContactByName(pc, name);
+    if(pos == -1){
+        printf("The name is not exist on the contact list");
+    }
+    else{
+        //delete
+        int i = 0;
+        for(i = pos; i < pc->sz - 1; i++){
+            pc->data[i] = pc->data[i + 1];
+        }
+        pc->sz--; 
+        printf("Successfully deleted!\n");
+    }
+
+
+
+
+
+}

@@ -31,9 +31,14 @@ struct Contact
 
 void InitContact(struct Contact * pc);
 
+//add contact
 void AddContact(struct Contact * pc);
 
+//show all contacts
 void ShowContact(struct Contact * pc);
 
+//delete a specific contact
+void DelContact(struct Contact * pc);
 
+void FineContactByName(struct Contact * pc, char name[]);
 #endif
