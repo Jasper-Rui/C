@@ -40,5 +40,9 @@ void ShowContact(struct Contact * pc);
 //delete a specific contact
 void DelContact(struct Contact * pc);
 
-void FineContactByName(struct Contact * pc, char name[]);
+//find a contact
+int FindContactByName(struct Contact * pc, char name[]);
+
+//search contact
+void SearchContact(const struct Contact * pc);
 #endif
