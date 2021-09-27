@@ -1,0 +1,3 @@
+No tags here. This is a tag: <html>
+We allow empty tags <>, or <multiline
+tags>. <!-- a comment <ignored> -->
