@@ -92,7 +92,7 @@ void RefundMoney(float input){
         input = input - count * 0.10;
     }
 
-    if(input >= 0.50){
+    if(input >= 0.05){
         count = calculate(input, 0.05);
         printf("5c*%d ", count);
         input = input - count * 0.05;
