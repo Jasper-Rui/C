@@ -1,0 +1,47 @@
+initial lenght is 109
+109
+start tages now 109
+stop tages now 80
+len is 75
+length is 6
+maxlength is 6
+minlength is 6
+total tags is 1
+flag now is 1
+
+start tages now 75
+stop tages now 53
+len is 52
+length is 2
+maxlength is 6
+minlength is 2
+total tags is 2
+flag now is 1
+
+start tages now 52
+stop tages now 46
+len is 31
+length is 16
+maxlength is 16
+minlength is 2
+total tags is 3
+flag now is 1
+
+start tages now 31
+stop tages now 28
+len is 5
+length is 24
+maxlength is 24
+minlength is 2
+total tags is 4
+flag now is 1
+
+start tages now 5
+stop tages now 1
+len is 1
+length is 24
+maxlength is 24
+minlength is 2
+total tags is 4
+flag now is 0
+
