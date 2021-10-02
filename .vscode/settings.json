@@ -1,3 +1,6 @@
 {
-    "C_Cpp.errorSquiggles": "Disabled"
+    "C_Cpp.errorSquiggles": "Disabled",
+    "files.associations": {
+        "CE3401A3.C": "cpp"
+    }
 }
