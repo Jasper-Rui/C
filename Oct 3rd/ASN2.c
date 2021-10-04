@@ -1,5 +1,5 @@
-// File: ASN3.c Author: 
-// Solution to assignment 3, ECED 3401 Fall 2021
+// File: ASN2.c Author: Haorui Yang
+// Solution to assignment 2, CSCI 3120 Fall 2021
 #include "ASN2.h"
 
 
