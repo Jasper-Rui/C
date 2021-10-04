@@ -5,6 +5,11 @@
 
 #define MAX_LINE 80 /* The maximum length command */
 
+void addhistory(){
+
+}
+
+
 int main (){
 
     char * args[MAX_LINE/2 + 1]; /* an array of character strings */
@@ -34,6 +39,9 @@ int main (){
         if(strcmp(args[0], "exit") == 0){
             should_run = 0;
         }    
+        else if(strcmp(args[0], "history") == 0 && 1){
+
+        }
         else{
             pid = fork();
 
