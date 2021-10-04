@@ -9,7 +9,8 @@
 #include <sys/wait.h>
 
 typedef struct _Node {
-    void* data;
+    char command[100];
+    int pid;
     struct _Node* next;
     struct _Node* prev;
 } Node;
@@ -18,12 +19,21 @@ typedef struct _LList{
     Node* first;
     Node* last;
     int size;
-    int itemSize;
-    char* type;
 } LinkedList;
 
 
 
 
 
+void addhistory(LinkedList * linkedlist, char *command, int pid);
+
+void printHistory(LinkedList * linkedlist);
+
+Node * make_Node(LinkedList * list ,char *command, int pid);
+
+LinkedList* llist_initialize();
+
+bool llist_add_node(LinkedList * list ,char *command, int pid);
+
+bool llist_remove_last(LinkedList *linkedList);
 #endif
