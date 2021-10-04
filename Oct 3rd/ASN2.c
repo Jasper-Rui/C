@@ -1,55 +1,39 @@
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/wait.h>
+// File: ASN3.c Author: 
+// Solution to assignment 3, ECED 3401 Fall 2021
+#include "ASN2.h"
 
 
 #define MAX_LINE 80 /* The maximum length command */
 
-//analyze
-//1 read input
-//2 sort input with strsok
-//3 fork process
-//4 execute process
-//linkedlist to store history
-int WAIT_TIME  = 10;
-
 int main (){
-
 
     char * args[MAX_LINE/2 + 1]; /* an array of character strings */
     int should_run = 1; /* flag to determine when to exit program */
-    int i = 0;
-    int j = 0;
     char user_input[100] = {0};
-    char * history_list[10];
-    char history[100];
+    int i = 0;
     pid_t pid;
     int execvp_status;
     int wait_status;
 
 
     while(should_run){
+   
         printf("CSCI3120>");
         fflush(stdout);
+
         scanf("%[^\n]s", user_input);
-        //history_list[i] = user_input;
-        //i++;
-        //printf("%s\n", history_list[i]);
         char * token = strtok(user_input, " ");
+        int index = 0;
         while(token){
-            args[j] = token;
+            args[index++] = token;
             token = strtok(NULL, " ");
-            //printf("%s\n", args[j]);
-            j++;       
+                 
         }
-        args[j] = NULL;
+        args[index] = NULL;
 
         if(strcmp(args[0], "exit") == 0){
             should_run = 0;
-        }
+        }    
         else{
             pid = fork();
 
@@ -66,11 +50,11 @@ int main (){
             }
             else{
                 wait(&wait_status);
-                printf("Child complete successfully");
+                printf("Child complete successfully\n");
             }
         }
+        break;
     }
 
-    
     return 0;
 }

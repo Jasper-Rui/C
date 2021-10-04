@@ -1,5 +1,4 @@
-// File: ASN3.c Author: Yueming Zou
-// Solution to assignment 3, ECED 3401 Fall 2021
+
 
 
 //include header file
