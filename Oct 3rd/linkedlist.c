@@ -1,14 +1,14 @@
 #include <stdlib.h>
 #include <string.h>
-#include "linked_list.h"
+#include "linkedlist.h"
 
 //Helpful function
-Node * make_Node(LinkedList * list ,void *item){
+Node * make_Node(LinkedList * list ,char *command, int* index, int* pid){
     Node *node = (Node *) malloc(sizeof(Node));
     int itemSize = list->itemSize;
-    void *data = malloc(itemSize);
-    memcpy(data, item, itemSize);
-    node->data = data;
+    node->command = command;
+    node->index = index;
+    node->pid = pid;
     node->next = NULL;
     node->prev = NULL;
     return node;
@@ -34,8 +34,8 @@ void add_single_node(LinkedList *linkedList, Node * node){
     linkedList->size = 1;
 }
 
-bool llist_add_first(LinkedList *linkedList, void *item){
-    if(linkedList == NULL || item == NULL){
+bool llist_add_first(LinkedList * list ,char *command, int* index, int* pid){
+    if(linkedList == NULL){
         return false;
     }
     Node *node = make_Node(linkedList, item);
@@ -137,8 +137,13 @@ void* llist_remove_last(LinkedList *linkedList){
         return NULL;
     }
     if(linkedList->size == 1){
-        return llist_remove_first(linkedList);
-    }
+        linkedList->first = linkedList->first->next;
+        if(linkedList->first == NULL){
+            linkedList->last = NULL;
+        }
+        linkedList->size--;
+        return data;
+        }
     void * data = linkedList->last->data;
     Node * node = linkedList->first;
     while(node->next != linkedList->last){

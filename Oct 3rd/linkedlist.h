@@ -4,7 +4,9 @@
 #include <stdbool.h>
 
 typedef struct _Node {
-    void* data;
+    char* command;
+    int* index;
+    int* pid;
     struct _Node* next;
     struct _Node* prev;
 } Node;
@@ -13,8 +15,6 @@ typedef struct _LList{
     Node* first;
     Node* last;
     int size;
-    int itemSize;
-    char* type;
 } LinkedList;
 
 LinkedList* llist_initialize(int, char*);
