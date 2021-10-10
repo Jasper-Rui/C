@@ -1,0 +1,1 @@
+Let us try a bit more complicated example: len:12 Multi line len:30 Ignore this This is a valid tag --> len:23 There should be 3 tags, minlen:12, maxlen:30 avg. len: (12+310+23)/3=65/3=21.67
