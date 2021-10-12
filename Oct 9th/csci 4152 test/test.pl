@@ -23,7 +23,7 @@ $string =~ s{\n}{ }g;
 #/\s<(.*)>/
 #print "$string\n";
 
-while($string =~ m/<([^!-]{0})([a-zA-Z]*)(\s*)[a-zA-Z]*>/){
+while($string =~ m/<([^!-]{0})([a-zA-Z]*)(\s*)[a-zA-Z]*>/){ 
     if($` !~ /<!--/) {
         $string= $';
         $tags++;
