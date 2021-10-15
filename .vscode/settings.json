@@ -2,6 +2,7 @@
     "C_Cpp.errorSquiggles": "Disabled",
     "files.associations": {
         "CE3401A3.C": "cpp",
-        "__node_handle": "c"
+        "__node_handle": "c",
+        "stdlib.h": "c"
     }
 }
