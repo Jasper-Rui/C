@@ -1,0 +1,12 @@
+true label:A result:A
+true label:A result:A
+true label:A result:A
+true label:B result:B
+true label:B result:B
+true label:C result:C
+true label:A result:B
+true label:B result:C
+true label:A result:B
+true label:D result:D
+true label:D result:D
+end
