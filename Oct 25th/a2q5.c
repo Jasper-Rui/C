@@ -48,7 +48,7 @@ int main () {
             for(int i = 0; i < strlen(class); i++){
                 //printf("class is %c, true times is %d, result is %d precision is %d\n", class[i], true_table[i], result_table[i], precision[i]);          
             }
-
+            exit(0);
             should_run = 0;
         }
         else{
@@ -96,9 +96,6 @@ int main () {
     float recall[100] = {0};
     float f1[100] = {0};
     for(int i = 0; i < strlen(class); i++){
-        precision_score[i] = (float) precision[i] / result_table[i];
-        recall[i] = (float) precision[i] / true_table[i];
-        f1[i] = (2 * precision_score[i] * recall[i]) / (recall[i] + precision_score[i]);
         if(result_table[i] == 0){
             precision_score[i] = 0;
         } 
@@ -107,6 +104,15 @@ int main () {
         } 
         else if(recall[i] + precision_score[i] == 0){
             f1[i] = 0;
+        }
+        if(result_table[i] != 0){
+            precision_score[i] = (float) precision[i] / result_table[i];
+        }
+        if(true_table[i] != 0){
+                recall[i] = (float) precision[i] / true_table[i];
+        }
+        if((recall[i] + precision_score[i]) != 0){
+            f1[i] = (2 * precision_score[i] * recall[i]) / (recall[i] + precision_score[i]);
         }
         printf("P(%c)=%.5f ", class[i], precision_score[i]);
         printf("R(%c)=%.5f ", class[i], recall[i]);
