@@ -24,7 +24,7 @@ int main () {
     while(fgets(copy, 100, fp) != NULL) {
         /* writing content to array */
         int length = strlen(copy);
-        //printf("length is %d\n", length);
+
         if(copy[length - 1] == '\n'){
             copy[length - 1] = '\0';
         }
@@ -50,13 +50,15 @@ int main () {
     char target_des[100];
     char port[10];
 
-    int flag = 0; //status
+    
 
     while(!feof(fptr2)){
+        int flag = 0; //status
         fgets(target_src, 100, fp);
         fgets(target_des, 100, fp);
         fgets(port, 10, fp);
 
+        //remove \n
         int length = strlen(target_des);
         if(target_des[length - 1] == '\n'){
             target_des[length - 1] = '\0';
@@ -74,44 +76,51 @@ int main () {
 
         
         //step1
+        int status = 0;
         for(int i = 0; i < len - 1; i++){
             if(strcmp(target_src, source[i]) == 0){
                 //if the ports are not same, update it
                 if(strcmp(source[i + 1], port) != 0){
                     strcpy(source[i + 1], port);
                 }
-                break;
+            }
+            else if(strcmp(target_src, source[i]) != 0){
+                status = 1;
             }
         }
-        //now  the src can be found in file, the port are updated
+
+        if(status == 1){
+            strcpy(source[len], target_src);
+            strcpy(source[len + 1], port);
+            len += 2;
+        }
+        //now the src can be found in file, the port are updated
 
         //step2
-        for(int i = 0; i < len - 1; i++){
+        for(int i = 0; i < len; i++){
             if(strcmp(target_des, source[i]) == 0){
-                printf("work?\n");
                 flag = 1;
                 break;
             }
         }
-        
+
         if(flag == 0){
             printf("%s\t%s\t%s\tBroadcast\n", target_src, target_des, port);
         }
 
         //step3
         //if we can find the des, then check the port
-        if(flag == 1){
+        else if(flag == 1){
             for(int i = 0; i < len - 1; i++){
                 if(strcmp(source[i], target_des) == 0 && strcmp(port, source[i + 1]) == 0){
                     printf("%s\t%s\t%s\tDiscard\n", target_src, target_des, port);
-                    break;
                 }
                 else if(strcmp(source[i], target_des) == 0 && strcmp(port, source[i + 1]) != 0){
                     printf("%s\t%s\t%s\tForward on port %s\n", target_src, target_des, port, source[i + 1]);
-                    break;
                 }
             }
         }
+
     }
     fclose(fptr2);
     return 0;
