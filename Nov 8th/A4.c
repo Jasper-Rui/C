@@ -78,13 +78,18 @@ void * NPSJF (FILE * file_pointer) {
 
     fputs("\nNPSJF\n", file_pointer);
     fprintf(file_pointer, "%s\t%s\t%s\n", info[i], info[i + 1], info[i + 2]);
+    i += 3;
     strcpy(runned_task[i], info[i]);
     runned_count = 1;
+    //run time is the total time needed to run previous tasks
+    //now the rum time is just the first job running time
     run_time = atoi(info[i + 2]);
 
     //search for the shortest job
-    
+    int should_run = 1;
 
+    //copy all other unrunned jobs into an array
+    //stop it here at 08/11/2021 need a little rest
 
     return file_pointer;
 }
