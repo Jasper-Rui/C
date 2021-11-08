@@ -70,9 +70,22 @@ void * RR (FILE * file_pointer) {
 void * NPSJF (FILE * file_pointer) {
     assert(file_pointer);
     int run_time = 0;
-    for(int i = 0; i < info_count; i++){
-        
-    }
+    char runned_task[100][100];
+    int runned_count = 0;
+    //for the first job, it will run without interrupt
+    //just add it to the file
+    int i = 0;
+
+    fputs("\nNPSJF\n", file_pointer);
+    fprintf(file_pointer, "%s\t%s\t%s\n", info[i], info[i + 1], info[i + 2]);
+    strcpy(runned_task[i], info[i]);
+    runned_count = 1;
+    run_time = atoi(info[i + 2]);
+
+    //search for the shortest job
+    
+
+
     return file_pointer;
 }
 
@@ -131,6 +144,7 @@ int main () {
     //start with FCFS
     //passing a file pointer
     FCFS(output_fp);
+    NPSJF(output_fp);
     fclose(output_fp);
 
     return 0;
