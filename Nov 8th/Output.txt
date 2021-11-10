@@ -1,8 +1,8 @@
 FCFS:
 T1	0	8
-T2	1	4
-T3	2	9
-T4	3	5
+T2	8	12
+T3	12	21
+T4	21	26
 Waiting time T1: 0
 Waiting time T2: 7
 Waiting time T3: 10
@@ -11,3 +11,6 @@ Average Waiting Time: 8.75
 
 NPSJF
 T1	0	8
+T2	8	12
+T4	12	17
+T3	17	26

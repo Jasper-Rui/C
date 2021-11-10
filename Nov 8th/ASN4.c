@@ -2,7 +2,7 @@
  * Author: Haorui Yang
  * Purpose: To simulate CPU Scheduling
  * Language:  C
- * File: ASN4.c 
+ * File: ASN4.c & ASN4.h
  * Solution to Assignment 4, CSCI 3120 Fall 2021
  */
 
@@ -18,7 +18,8 @@
  * 
  *  returns: the node with the commands and the pid
  */
-Node * make_Node(LinkedList * linkedlist ,char * task_name, int arrive_time, int run_time){
+
+Node * make_Node(char * task_name, int arrive_time, int run_time){
     Node *node = (Node *) malloc(sizeof(Node));
     strcpy(node->task_name, task_name);
     node->arrtive_time = arrive_time;
@@ -56,13 +57,24 @@ LinkedList* llist_initialize(){
  *  returns: if the new node add successfully
  */
 bool llist_add_node(LinkedList * linkedlist ,char * task_name, int arrive_time, int run_time){
-    if(linkedlist == NULL){
-        return false;
-    }
-    Node *node = make_Node(linkedlist, task_name, arrive_time, run_time);
+    assert(linkedlist);
+    assert(task_name);
+
+    Node *node = make_Node(task_name, arrive_time, run_time);
+
     if(linkedlist->size != 0){
-        node->next = linkedlist->first;
-        linkedlist->first = node;
+        node->prev = linkedlist->last;
+        node->next = NULL;
+        linkedlist->last->next = node;
+        linkedlist->last = node;
+        linkedlist->size += 1;
+        
+    }
+    else if(linkedlist->size == 1){
+        linkedlist->first->next = node;
+        node->prev = linkedlist->first;
+        node->next = NULL;
+        linkedlist->last = node;
         linkedlist->size += 1;
     }
     else{
@@ -82,28 +94,57 @@ bool llist_add_node(LinkedList * linkedlist ,char * task_name, int arrive_time, 
  *           the linked_list pointer that has already removed the last node
  */
 
-bool llist_remove_last(LinkedList *linkedlist){
-    if(linkedlist == NULL){
-        return false;
-    }
+bool llist_remove(LinkedList *linkedlist, char * task_name){
+    assert(linkedlist);
+    assert(task_name);
+
     if(linkedlist->size == 1){
         linkedlist->first = NULL;
         linkedlist->last = NULL;
         linkedlist->size--;
     }
-    else{
-        Node * node = linkedlist->first;
-        while(node->next != linkedlist->last){
-            node = node->next;
-        }
-        node->next = NULL;
-        linkedlist->last = node;
+    else if(strcmp(task_name, linkedlist->first->task_name) == 0){
+        linkedlist->first = linkedlist->first->next;
         linkedlist->size--;
+        linkedlist->first->prev = NULL;
+    }
+    else if(strcmp(task_name, linkedlist->last->task_name) == 0){
+        linkedlist->last = linkedlist->last->prev;
+        linkedlist->size--;
+        linkedlist->last->next = NULL;
+    }
+    else{
+        Node * node = linkedlist->last;
+        while(strcmp(task_name, node->prev->task_name) != 0){
+            node = node->prev;
+        }
+        node->prev = node->prev->prev;
+        linkedlist->size--;   
     }
     return true;
 }
 
-
+Node * searchSJ (LinkedList * linkedlist, int previous_run_time){
+    Node * node = linkedlist->first;
+    int shortest_time = linkedlist->first->run_time;
+    for(int i = 0; i < linkedlist->size; i++){
+        if(node->arrtive_time < previous_run_time){
+            int temp = node->run_time;
+            if(temp < shortest_time){
+                shortest_time = temp;
+            }
+        }
+        node = node->next;
+    }
+    Node * node_copy = linkedlist->first;
+    for(int i = 0; i < linkedlist->size; i++){
+        if(shortest_time == node_copy->run_time){
+            break;
+        }
+        node_copy = node_copy->next;
+    }
+    return node_copy;
+}
 
 //initialize a 2d array to store the task and a global variable i start with 0
 char task[100][100];
@@ -116,19 +157,18 @@ void * FCFS (FILE * file_pointer) {
     //detect if the file_pointer is NULL or not
     assert(file_pointer);
     
+    int timer = 0;
     fputs("FCFS:\n", file_pointer);
     for(int i = 0; i < info_count; i++){
         if(i % 3 == 0) {
-            fputs(info[i], file_pointer);
-            fputs("\t", file_pointer);
+            fprintf(file_pointer, "%s\t", info[i]);
         }
         else if(i % 3 == 1) {
-            fputs(info[i], file_pointer);
-            fputs("\t", file_pointer);
+            fprintf(file_pointer, "%d\t", timer);
         }
         else {
-            fputs(info[i], file_pointer);
-            fputs("\n", file_pointer);
+            fprintf(file_pointer, "%d\n", atoi(info[i]) + timer);
+            timer += atoi(info[i]);
         }
     }
 
@@ -168,35 +208,56 @@ void * RR (FILE * file_pointer) {
 }
 
 void * NPSJF (FILE * file_pointer) {
+    char task_order[100][100];
+    int task_order_count = 0;
     assert(file_pointer);
-    int run_time = 0;
-    char runned_task[100][100];
-    int runned_count = 0;
-    //for the first job, it will run without interrupt
-    //just add it to the file
-    int i = 0;
-
-    //step 1 read, run and store task 1 info
-    //direct read and run first task
     fputs("\nNPSJF\n", file_pointer);
-    fprintf(file_pointer, "%s\t%s\t%s\n", info[i], info[i + 1], info[i + 2]);
-    i += 3;
-    strcpy(runned_task[i], info[i]);
-    strcpy(runned_task[i + 1], info[i + 1]);
-    strcpy(runned_task[i + 2], info[i + 2]);
-    runned_count = 1;
-    //run time is the total time needed to run for previous tasks
-    //now the wait time for task 2 is just the first job running time
-    run_time = atoi(info[i + 2]);
+    int count = 0;
+    LinkedList * linkedlist = llist_initialize();
+
+    while(count < info_count){
+        llist_add_node(linkedlist, info[count], atoi(info[count + 1]), atoi(info[count + 2]));
+        count += 3;
+    }
+
+    //first task
+    int wait_time = 0;
+    fprintf(file_pointer, "%s\t%d\t%d\n", linkedlist->first->task_name, wait_time, wait_time + linkedlist->first->run_time);
+    wait_time += linkedlist->first->run_time;
+    llist_remove(linkedlist, linkedlist->first->task_name);
+
+    int wait[10];
+    int wait_times = 0;
+    wait[wait_times] = wait_time;
+    wait_times++;
+
+    //remaining task
+    while(linkedlist->size){
+        Node * node = searchSJ(linkedlist, wait_time);
+        fprintf(file_pointer, "%s\t%d\t%d\n", node->task_name, wait_time, wait_time + node->run_time);
+        //update wait_time;
+        wait_time += node->run_time;
+        wait[wait_times++] = wait_time;
+        llist_remove(linkedlist, node->task_name);
+    }
+
+    count = 0;
+    while(count < info_count){
+        llist_add_node(linkedlist, info[count], atoi(info[count + 1]), atoi(info[count + 2]));
+        count += 3;
+    }
+    //take a break here
+    Node * node = linkedlist->first;
+    for(int i = 0; i < wait_times; i++){
+        printf("wait time for %s is %d\n", node->task_name, wait[i] - node->run_time);
+        node = node->next;
+        //fprintf(file_pointer, "Waiting time %s: %d\n", info[i], total_time);
+    }
+    
+    
+    
 
 
-
-
-    //search for the shortest job
-    int should_run = 1;
-
-    //copy all other unrunned jobs into an array
-    //stop it here at 08/11/2021 need a little rest
 
     return file_pointer;
 }
@@ -212,7 +273,7 @@ void  * PSJF (FILE * file_pointer) {
 
 
 int main () {
-
+    
     /* following lines before flose(fp) is the read the TaskSpec file*/
     FILE * fp = NULL;
     fp = fopen("TaskSpec.txt", "r"); 

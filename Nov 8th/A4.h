@@ -24,21 +24,23 @@ typedef struct _LList{
 
 
 
-Node * make_Node(LinkedList * list ,char * task_name, int arrive_time, int run_time);
+Node * make_Node(char * task_name, int arrive_time, int run_time);
 
 LinkedList* llist_initialize();
 
 bool llist_add_node(LinkedList * list ,char * task_name, int arrive_time, int run_time);
 
-bool llist_remove_last(LinkedList *linkedList);
+bool llist_remove(LinkedList *linkedList, char * task_name);
 
-void * FCFS  (FILE* filename);
+void * FCFS (FILE* filename);
 
-void * RR  (FILE* filename);
+void * RR (FILE* filename);
 
-void * NPSJF  (FILE* filename);
+void * NPSJF (FILE* filename);
 
-void * PSJF  (FILE* filename);
+void * PSJF (FILE* filename);
+
+Node * searchSJ (LinkedList * linkedlist, int previoust_run_time);
 
 
 
