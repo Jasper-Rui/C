@@ -219,10 +219,10 @@ void * NSJF (FILE * file_pointer) {
 
     //create a 2d array to store the info
     char task_order[100][100];
-    int task_order_count = 0;
+    int task_order_count = 1;
 
     int time[10];
-    int time_count = 0;
+    int time_count = 1;
 
     //first task
     int wait_time = 0;
@@ -258,7 +258,7 @@ void * NSJF (FILE * file_pointer) {
         time_count++;
     }
 
-    for(int i = 1; i < time_count + 2; i++){
+    for(int i = 1; i <= time_count; i++){
         fprintf(file_pointer, "Waiting time %s: %d\n", task_order[i], time[i]);
     }
 
