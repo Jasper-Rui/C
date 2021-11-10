@@ -36,7 +36,7 @@ void * FCFS (FILE* filename);
 
 void * RR (FILE* filename);
 
-void * NPSJF (FILE* filename);
+void * NSJF (FILE* filename);
 
 void * PSJF (FILE* filename);
 
