@@ -14,3 +14,8 @@ T1	0	8
 T2	8	12
 T4	12	17
 T3	17	26
+Waiting time T1: 0
+Waiting time T2: 7
+Waiting time T4: 9
+Waiting time T3: 15
+Average Waiting Time: 7.75

@@ -208,8 +208,6 @@ void * RR (FILE * file_pointer) {
 }
 
 void * NPSJF (FILE * file_pointer) {
-    char task_order[100][100];
-    int task_order_count = 0;
     assert(file_pointer);
     fputs("\nNPSJF\n", file_pointer);
     int count = 0;
@@ -220,12 +218,25 @@ void * NPSJF (FILE * file_pointer) {
         count += 3;
     }
 
+    //create a 2d array to store the info
+    char task_order[100][100];
+    int task_order_count = 0;
+
+    int time[10];
+    int time_count = 0;
+
     //first task
     int wait_time = 0;
     fprintf(file_pointer, "%s\t%d\t%d\n", linkedlist->first->task_name, wait_time, wait_time + linkedlist->first->run_time);
     wait_time += linkedlist->first->run_time;
+    //fprintf(file_pointer, "Waiting time %s: %d\n", linkedlist->first->task_name, linkedlist->first->arrtive_time);
+
+    strcpy(task_order[task_order_count++], linkedlist->first->task_name);
+    time[time_count++] = linkedlist->first->arrtive_time;
+
     llist_remove(linkedlist, linkedlist->first->task_name);
 
+    double average_time = 0;
     int wait[10];
     int wait_times = 0;
     wait[wait_times] = wait_time;
@@ -236,29 +247,20 @@ void * NPSJF (FILE * file_pointer) {
         Node * node = searchSJ(linkedlist, wait_time);
         fprintf(file_pointer, "%s\t%d\t%d\n", node->task_name, wait_time, wait_time + node->run_time);
         //update wait_time;
+        strcpy(task_order[task_order_count++], node->task_name);
+        time[time_count++] = wait_time - node->arrtive_time;
+        //fprintf(file_pointer, "Waiting time %s: %d\n", node->task_name, wait_time - node->arrtive_time);
+        average_time += wait_time - node->arrtive_time;
         wait_time += node->run_time;
         wait[wait_times++] = wait_time;
         llist_remove(linkedlist, node->task_name);
     }
 
-    count = 0;
-    while(count < info_count){
-        llist_add_node(linkedlist, info[count], atoi(info[count + 1]), atoi(info[count + 2]));
-        count += 3;
+    for(int i = 0; i < time_count; i++){
+        fprintf(file_pointer, "Waiting time %s: %d\n", task_order[i], time[i]);
     }
-    //take a break here
-    Node * node = linkedlist->first;
-    for(int i = 0; i < wait_times; i++){
-        printf("wait time for %s is %d\n", node->task_name, wait[i] - node->run_time);
-        node = node->next;
-        //fprintf(file_pointer, "Waiting time %s: %d\n", info[i], total_time);
-    }
-    
-    
-    
 
-
-
+    fprintf(file_pointer, "Average Waiting Time: %.2f\n", average_time/4);
     return file_pointer;
 }
 
@@ -267,9 +269,6 @@ void  * PSJF (FILE * file_pointer) {
     return file_pointer;
 
 }
-
-
-
 
 
 int main () {
@@ -321,7 +320,7 @@ int main () {
     FCFS(output_fp);
     NPSJF(output_fp);
     fclose(output_fp);
-    //clost file pointer
+    //close file pointer
 
     return 0;
 }
