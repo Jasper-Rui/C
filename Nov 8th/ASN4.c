@@ -1,10 +1,110 @@
-// File: A4.c Author: Haorui Yang
-// Solution to Assignment 4, CSCI 3120 Fall 2021
+/*
+ * Author: Haorui Yang
+ * Purpose: To simulate CPU Scheduling
+ * Language:  C
+ * File: ASN4.c 
+ * Solution to Assignment 4, CSCI 3120 Fall 2021
+ */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <assert.h>
+//header file, all necessary libraries are added inside header file
+#include "A4.h"
+
+/*
+ * Function:  make_Node
+ * --------------------
+ *  linkedlist: a linked list 
+ *  command: a pointer that points to the location stores the string
+ *  pid: children process identifier
+ * 
+ *  returns: the node with the commands and the pid
+ */
+Node * make_Node(LinkedList * linkedlist ,char * task_name, int arrive_time, int run_time){
+    Node *node = (Node *) malloc(sizeof(Node));
+    strcpy(node->task_name, task_name);
+    node->arrtive_time = arrive_time;
+    node->run_time = run_time;
+    node->next = NULL;
+    node->prev = NULL;
+    return node;
+}
+
+/*
+ * Function:  llist_initialize
+ * --------------------
+ *  no input parameter
+ * 
+ *  returns: the initialized linked_list
+ */
+LinkedList* llist_initialize(){
+    LinkedList *linkedlist = malloc(sizeof(LinkedList));
+    if(linkedlist == NULL){
+        return NULL;
+    }
+    linkedlist->size = 0;
+    linkedlist->first = NULL;
+    linkedlist->last = NULL;
+    return linkedlist;
+}
+
+/*
+ * Function:  llist_add_node
+ * --------------------
+ *  linkedlist: linked list pointer
+ *  command: command string to be added
+ *  pid: integer pid to be added
+ * 
+ *  returns: if the new node add successfully
+ */
+bool llist_add_node(LinkedList * linkedlist ,char * task_name, int arrive_time, int run_time){
+    if(linkedlist == NULL){
+        return false;
+    }
+    Node *node = make_Node(linkedlist, task_name, arrive_time, run_time);
+    if(linkedlist->size != 0){
+        node->next = linkedlist->first;
+        linkedlist->first = node;
+        linkedlist->size += 1;
+    }
+    else{
+        linkedlist->first = node;
+        linkedlist->last = linkedlist->first;
+        linkedlist->size = 1;
+    }
+    return true;
+}
+
+/*
+ * Function:  llist_remove_last
+ * --------------------
+ *  linkedlist: linked list pointer
+ * 
+ *  returns: false if the linked_list is NULL, otherwise 
+ *           the linked_list pointer that has already removed the last node
+ */
+
+bool llist_remove_last(LinkedList *linkedlist){
+    if(linkedlist == NULL){
+        return false;
+    }
+    if(linkedlist->size == 1){
+        linkedlist->first = NULL;
+        linkedlist->last = NULL;
+        linkedlist->size--;
+    }
+    else{
+        Node * node = linkedlist->first;
+        while(node->next != linkedlist->last){
+            node = node->next;
+        }
+        node->next = NULL;
+        linkedlist->last = node;
+        linkedlist->size--;
+    }
+    return true;
+}
+
+
+
 //initialize a 2d array to store the task and a global variable i start with 0
 char task[100][100];
 int task_number = 0;
@@ -76,14 +176,21 @@ void * NPSJF (FILE * file_pointer) {
     //just add it to the file
     int i = 0;
 
+    //step 1 read, run and store task 1 info
+    //direct read and run first task
     fputs("\nNPSJF\n", file_pointer);
     fprintf(file_pointer, "%s\t%s\t%s\n", info[i], info[i + 1], info[i + 2]);
     i += 3;
     strcpy(runned_task[i], info[i]);
+    strcpy(runned_task[i + 1], info[i + 1]);
+    strcpy(runned_task[i + 2], info[i + 2]);
     runned_count = 1;
-    //run time is the total time needed to run previous tasks
-    //now the rum time is just the first job running time
+    //run time is the total time needed to run for previous tasks
+    //now the wait time for task 2 is just the first job running time
     run_time = atoi(info[i + 2]);
+
+
+
 
     //search for the shortest job
     int should_run = 1;
@@ -94,10 +201,10 @@ void * NPSJF (FILE * file_pointer) {
     return file_pointer;
 }
 
-void  * PSJG (FILE * file_pointer) {
+void  * PSJF (FILE * file_pointer) {
     assert(file_pointer);
     return file_pointer;
-    
+
 }
 
 
@@ -119,6 +226,7 @@ int main () {
         task_number++;
     }
     fclose(fp);
+    //close file pointer
 
     //read all the infomation and store them into a 2d array
     int i = 0;
@@ -152,6 +260,7 @@ int main () {
     FCFS(output_fp);
     NPSJF(output_fp);
     fclose(output_fp);
+    //clost file pointer
 
     return 0;
 }
