@@ -208,7 +208,7 @@ void * RR (FILE * file_pointer) {
 
 void * NSJF (FILE * file_pointer) {
     assert(file_pointer);
-    fputs("\nNPSJF\n", file_pointer);
+    fputs("\nNSJF\n", file_pointer);
     int count = 0;
     LinkedList * linkedlist = llist_initialize();
 
@@ -247,7 +247,11 @@ void * NSJF (FILE * file_pointer) {
         Node * node = searchSJ(linkedlist, wait_time);
         fprintf(file_pointer, "%s\t%d\t%d\n", node->task_name, wait_time, wait_time + node->run_time);
         //update wait_time;
-        int index = *(node->task_name + 1) - '0';
+        int index = 0;
+        if(strlen(node->task_name) == 2){
+            index = *(node->task_name + 1) - '0';
+        }
+         
         strcpy(task_order[index], node->task_name);
         time[index] = wait_time - node->arrtive_time;
         //fprintf(file_pointer, "Waiting time %s: %d\n", node->task_name, wait_time - node->arrtive_time);
@@ -262,7 +266,7 @@ void * NSJF (FILE * file_pointer) {
         fprintf(file_pointer, "Waiting time %s: %d\n", task_order[i], time[i]);
     }
 
-    fprintf(file_pointer, "Average Waiting Time: %.2f\n", average_time/4);
+    fprintf(file_pointer, "Average Waiting Time: %.2f\n", average_time/time_count);
     return file_pointer;
 }
 
