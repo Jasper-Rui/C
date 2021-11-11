@@ -203,7 +203,58 @@ void * FCFS (FILE * file_pointer) {
 void * RR (FILE * file_pointer) {
     assert(file_pointer);
     int time_quantum = 4;
+
+    //since we already know there are how many task
+    //read 1 task, process with time_quantum, then current run time is 4
+    //add all the task arrive time under 4, then process second task
+    //read all test arrive under 8
+    //if two or more task arrive at the same time, new task should be placed to linkedlist first
+
+    fputs("\nRR\n", file_pointer);
+    LinkedList * linkedlist = llist_initialize();
     
+    int task_run_time = 0;
+    int task_wait_time = 0;
+    int task_read_count = 0;
+    
+    int run_time = 0;
+    //now we read the first task and add it to the linkedlist
+    //assume the run_time is 4, now add task with run_time under 4
+    
+    while(task_read_count <= info_count){   
+        if(task_read_count == 0){
+            llist_add_node(linkedlist, info[0], atoi(info[1]), atoi(info[2]));
+            if(linkedlist->first->run_time > 4) task_run_time = 4;
+            else task_run_time = linkedlist->first->run_time;
+            fprintf(file_pointer, "%s\t%d\t%d\n", linkedlist->first->task_name, linkedlist->first->arrtive_time, task_run_time);
+            task_wait_time = task_run_time;
+            task_read_count += 3;
+            printf("Run time is %d\n", task_run_time);
+            //The reason why it is 3, is the info_count/3 is the amount of task
+            //if the task is not finished, add to the end
+            //and read task
+            //info[task_read_count + 1] is the arrive time for each task
+            while(1){
+                if(atoi(info[task_read_count + 1]) <= task_run_time && task_read_count <= info_count - 3){
+                    llist_add_node(linkedlist, info[task_read_count], atoi(info[task_read_count + 1]), atoi(info[task_read_count + 2]));
+                    task_read_count += 3;
+                }
+                else{
+                    break;
+                }
+            }
+            printf("%d\n", linkedlist->size);
+            printf("%s\n", linkedlist->first);
+            printf("%s\n", linkedlist->first->next);
+            printf("%s\n", linkedlist->last);
+        }
+        else{
+            ;
+        }
+
+        break;
+    }
+
 
 
 
@@ -329,7 +380,9 @@ int main () {
     //start with FCFS
     //passing a file pointer
     FCFS(output_fp);
+    RR(output_fp);
     NSJF(output_fp);
+    
     fclose(output_fp);
     //close file pointer
 
