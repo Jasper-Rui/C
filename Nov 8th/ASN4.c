@@ -152,6 +152,14 @@ int task_number = 0;
 char info[100][100];
 int info_count = 0;
 
+/*
+ * Function:  FCFS
+ * --------------------
+ *  file_pointer: file which will store the prograss
+ * 
+ *  returns: file poitner
+ */
+
 void * FCFS (FILE * file_pointer) {
     //detect if the file_pointer is NULL or not
     assert(file_pointer);
@@ -179,7 +187,7 @@ void * FCFS (FILE * file_pointer) {
 
     for(int i = 0; i < info_count - 1; i += 3){
         if(i == 0){
-            fprintf(file_pointer, "Waiting time %s: 0\n", info[i]);
+            fprintf(file_pointer, "Waiting Time %s: 0\n", info[i]);
             arrive_time = atoi(info[i + 1]);
             total_time += atoi(info[i + 2]);
             task_total++;
@@ -189,7 +197,7 @@ void * FCFS (FILE * file_pointer) {
             arrive_time = atoi(info[i + 1]); // update arrive time
             total_time -= arrive_time_difference; // total time is the run time from last task minus the arrive time
             time += total_time;
-            fprintf(file_pointer, "Waiting time %s: %d\n", info[i], total_time);
+            fprintf(file_pointer, "Waiting Time %s: %d\n", info[i], total_time);
             total_time += atoi(info[i + 2]);
             task_total++;     
         }       
@@ -198,6 +206,13 @@ void * FCFS (FILE * file_pointer) {
     fprintf(file_pointer, "Average Waiting Time: %.2f\n", average_time);
     return file_pointer;
 }
+
+/*
+ * Function:  RR
+ * --------------------
+ *  file_pointer: file which will store the prograss
+ *  returns: file poitner
+ */
 
 
 void * RR (FILE * file_pointer) {
@@ -216,26 +231,34 @@ void * RR (FILE * file_pointer) {
     int task_run_time = 0;
     int task_wait_time = 0;
     int task_read_count = 0;
-    
-    int run_time = 0;
+    int current_time = 0;
     //now we read the first task and add it to the linkedlist
     //assume the run_time is 4, now add task with run_time under 4
-    
-    while(task_read_count <= info_count){   
+
+    int wait_time_for_task[(info_count/3) + 1];
+    int last_arrive_time[(info_count/3) + 1];
+    for(int i = 0; i <= info_count/3; i++){
+        wait_time_for_task[i] = 0;
+        last_arrive_time[i] = 0;
+    }
+
+    while(1){   
         if(task_read_count == 0){
             llist_add_node(linkedlist, info[0], atoi(info[1]), atoi(info[2]));
-            if(linkedlist->first->run_time > 4) task_run_time = 4;
+            if(linkedlist->first->run_time > time_quantum) task_run_time = time_quantum;
             else task_run_time = linkedlist->first->run_time;
             fprintf(file_pointer, "%s\t%d\t%d\n", linkedlist->first->task_name, linkedlist->first->arrtive_time, task_run_time);
+            wait_time_for_task[1] = linkedlist->first->arrtive_time;
+            last_arrive_time[1] = linkedlist->first->arrtive_time;
             task_wait_time = task_run_time;
             task_read_count += 3;
-            printf("Run time is %d\n", task_run_time);
+            current_time = task_run_time;
             //The reason why it is 3, is the info_count/3 is the amount of task
             //if the task is not finished, add to the end
             //and read task
             //info[task_read_count + 1] is the arrive time for each task
             while(1){
-                if(atoi(info[task_read_count + 1]) <= task_run_time && task_read_count <= info_count - 3){
+                if(atoi(info[task_read_count + 1]) <= current_time && task_read_count <= info_count - 3){
                     llist_add_node(linkedlist, info[task_read_count], atoi(info[task_read_count + 1]), atoi(info[task_read_count + 2]));
                     task_read_count += 3;
                 }
@@ -243,28 +266,81 @@ void * RR (FILE * file_pointer) {
                     break;
                 }
             }
-            printf("%d\n", linkedlist->size);
-            printf("%s\n", linkedlist->first);
-            printf("%s\n", linkedlist->first->next);
-            printf("%s\n", linkedlist->last);
+            if(linkedlist->first->run_time - task_run_time > 0){
+                llist_add_node(linkedlist, linkedlist->first->task_name, linkedlist->first->arrtive_time, linkedlist->first->run_time - task_run_time);
+                llist_remove(linkedlist, linkedlist->first->task_name);
+            }
+            else{
+                llist_remove(linkedlist, linkedlist->first->task_name);
+            } 
         }
         else{
-            ;
+            //second stage process next task
+            Node * node = linkedlist->first;
+            int index = 0;
+            if(strlen(node->task_name) == 2){
+                index = *(node->task_name + 1) - '0';
+            }
+            else if (strlen(node->task_name) == 3) {
+                index = (*(node->task_name + 1) - '0') * 10 + *(node->task_name + 2) - '0';
+            } 
+            //update run time
+            if(linkedlist->first->run_time > time_quantum) task_run_time = time_quantum;
+            else task_run_time = linkedlist->first->run_time;
+
+            fprintf(file_pointer, "%s\t%d\t%d\n", linkedlist->first->task_name, task_wait_time, task_wait_time + task_run_time);
+            
+            //if wait_time_for_task[index] != 0, means it already run once, so we need -4 
+            if(wait_time_for_task[index] == 0 && index != 1){
+                wait_time_for_task[index] = task_wait_time - linkedlist->first->arrtive_time;
+            }
+            else{
+                //printf("%d\n", last_arrive_time[index]);
+                //printf("%d\n", task_wait_time);
+                wait_time_for_task[index] = task_wait_time - last_arrive_time[index] - time_quantum + wait_time_for_task[index];
+            }
+
+            last_arrive_time[index] = task_wait_time;
+
+            task_wait_time += task_run_time;
+            current_time += task_run_time;
+
+            while(1){
+                if(atoi(info[task_read_count + 1]) <= current_time && task_read_count <= info_count - 3){
+                    llist_add_node(linkedlist, info[task_read_count], atoi(info[task_read_count + 1]), atoi(info[task_read_count + 2]));
+                    task_read_count += 3;
+                }
+                else{
+                    break;
+                }
+            }
+
+            if(linkedlist->first->run_time - task_run_time != 0){
+                llist_add_node(linkedlist, linkedlist->first->task_name, linkedlist->first->arrtive_time, linkedlist->first->run_time - task_run_time);
+                llist_remove(linkedlist, linkedlist->first->task_name);
+            }
+            else{
+                llist_remove(linkedlist, linkedlist->first->task_name);
+            }
         }
-
-        break;
+        
+        //condition to stop the while loop
+        if(linkedlist->size == 0){
+            break;
+        }
     }
-
-
-
-
-
+    double total_time = 0.00;
+    for(int i = 0; i < info_count/3; i++){
+        total_time += wait_time_for_task[i + 1];
+        fprintf(file_pointer, "Waiting Time %s: %d\n", info[i * 3], wait_time_for_task[i + 1]);
+    }
+    fprintf(file_pointer, "Average Waiting Time: %.2f\n", total_time / (info_count/3));
     return file_pointer;
 }
 
 void * NSJF (FILE * file_pointer) {
     assert(file_pointer);
-    fputs("\nNSJF\n", file_pointer);
+    fputs("\nNPSJF\n", file_pointer);
     int count = 0;
     LinkedList * linkedlist = llist_initialize();
 
@@ -275,7 +351,6 @@ void * NSJF (FILE * file_pointer) {
 
     //create a 2d array to store the info
     char task_order[100][100];
-    int task_order_count = 1;
 
     int time[10];
     int time_count = 1;
@@ -292,7 +367,7 @@ void * NSJF (FILE * file_pointer) {
     llist_remove(linkedlist, linkedlist->first->task_name);
 
     double average_time = 0;
-    int wait[10];
+    int wait[100];
     int wait_times = 0;
 
     wait[wait_times] = wait_time;
@@ -303,9 +378,13 @@ void * NSJF (FILE * file_pointer) {
         Node * node = searchSJ(linkedlist, wait_time);
         fprintf(file_pointer, "%s\t%d\t%d\n", node->task_name, wait_time, wait_time + node->run_time);
         //update wait_time;
+        //check which task we are running 
         int index = 0;
         if(strlen(node->task_name) == 2){
             index = *(node->task_name + 1) - '0';
+        }
+        else if (strlen(node->task_name) == 3) {
+            index = (*(node->task_name + 1) - '0') * 10 + *(node->task_name + 2) - '0';
         }
          
         strcpy(task_order[index], node->task_name);
@@ -319,7 +398,7 @@ void * NSJF (FILE * file_pointer) {
     }
 
     for(int i = 1; i <= time_count; i++){
-        fprintf(file_pointer, "Waiting time %s: %d\n", task_order[i], time[i]);
+        fprintf(file_pointer, "Waiting Time %s: %d\n", task_order[i], time[i]);
     }
 
     fprintf(file_pointer, "Average Waiting Time: %.2f\n", average_time/time_count);
