@@ -214,7 +214,6 @@ void * FCFS (FILE * file_pointer) {
  *  returns: file poitner
  */
 
-
 void * RR (FILE * file_pointer) {
     assert(file_pointer);
     int time_quantum = 4;
@@ -335,6 +334,9 @@ void * RR (FILE * file_pointer) {
         fprintf(file_pointer, "Waiting Time %s: %d\n", info[i * 3], wait_time_for_task[i + 1]);
     }
     fprintf(file_pointer, "Average Waiting Time: %.2f\n", total_time / (info_count/3));
+
+    free(linkedlist);
+    linkedlist = NULL;
     return file_pointer;
 }
 
@@ -400,15 +402,27 @@ void * NSJF (FILE * file_pointer) {
     for(int i = 1; i <= time_count; i++){
         fprintf(file_pointer, "Waiting Time %s: %d\n", task_order[i], time[i]);
     }
-
     fprintf(file_pointer, "Average Waiting Time: %.2f\n", average_time/time_count);
+    
+    free(linkedlist);
+    linkedlist = NULL;
     return file_pointer;
 }
 
 void  * PSJF (FILE * file_pointer) {
     assert(file_pointer);
-    return file_pointer;
+    fputs("\nPSJF\n", file_pointer);
+    int count = 0;
+    LinkedList * linkedlist = llist_initialize();
 
+    while(count < info_count){
+        llist_add_node(linkedlist, info[count], atoi(info[count + 1]), atoi(info[count + 2]));
+        count += 3;
+    }
+
+    free(linkedlist);
+    linkedlist = NULL;
+    return file_pointer;
 }
 
 
@@ -427,7 +441,8 @@ int main () {
         task_number++;
     }
     fclose(fp);
-    //close file pointer
+    fp = NULL;
+    //close file pointer and set variable to NULL
 
     //read all the infomation and store them into a 2d array
     int i = 0;
@@ -461,9 +476,10 @@ int main () {
     FCFS(output_fp);
     RR(output_fp);
     NSJF(output_fp);
-    
-    fclose(output_fp);
-    //close file pointer
+    PSJF(output_fp);
 
+    fclose(output_fp);
+    output_fp = NULL;
+    //close file pointer and set variable to NULL
     return 0;
 }

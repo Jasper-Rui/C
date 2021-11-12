@@ -34,3 +34,5 @@ Waiting Time T2: 7
 Waiting Time T3: 15
 Waiting Time T4: 9
 Average Waiting Time: 7.75
+
+PSJF
