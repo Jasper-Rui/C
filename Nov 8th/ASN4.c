@@ -113,6 +113,7 @@ bool llist_remove(LinkedList *linkedlist, char * task_name){
         linkedlist->last->next = NULL;
     }
     else{
+        //this part is a little buggy, but this part is never used in my code
         Node * node = linkedlist->last;
         while(strcmp(task_name, node->prev->task_name) != 0){
             node = node->prev;
@@ -126,6 +127,8 @@ bool llist_remove(LinkedList *linkedlist, char * task_name){
 Node * searchSJ (LinkedList * linkedlist, int previous_run_time){
     Node * node = linkedlist->first;
     int shortest_time = linkedlist->first->run_time;
+    //find shortest job
+    //use task name is better, since there may exist task coming in with the same run time
     for(int i = 0; i < linkedlist->size; i++){
         if(node->arrtive_time < previous_run_time){
             int temp = node->run_time;
@@ -185,7 +188,7 @@ void * FCFS (FILE * file_pointer) {
     int arrive_time_difference = 0;
     double time = 0;
 
-    for(int i = 0; i < info_count - 1; i += 3){
+    for(int i = 0; i < info_count; i += 3){
         if(i == 0){
             fprintf(file_pointer, "Waiting Time %s: 0\n", info[i]);
             arrive_time = atoi(info[i + 1]);
@@ -403,7 +406,7 @@ void * NSJF (FILE * file_pointer) {
         fprintf(file_pointer, "Waiting Time %s: %d\n", task_order[i], time[i]);
     }
     fprintf(file_pointer, "Average Waiting Time: %.2f\n", average_time/time_count);
-    
+
     free(linkedlist);
     linkedlist = NULL;
     return file_pointer;
@@ -420,6 +423,10 @@ void  * PSJF (FILE * file_pointer) {
         count += 3;
     }
 
+    while (linkedlist->size){
+        break;
+    }
+
     free(linkedlist);
     linkedlist = NULL;
     return file_pointer;
@@ -431,14 +438,13 @@ int main () {
     /* following lines before flose(fp) is the read the TaskSpec file*/
     FILE * fp = NULL;
     fp = fopen("TaskSpec.txt", "r"); 
-
     if(fp == NULL) {
         perror("Error opening file");
         return(-1);
     }
-    while (fgets(task[task_number], 100, fp) != NULL) {
-        /* code */
-        task_number++;
+
+    while (fgets(task[task_number++], 100, fp) != NULL) {
+        ;
     }
     fclose(fp);
     fp = NULL;
@@ -448,8 +454,7 @@ int main () {
     int i = 0;
     while (i < task_number) {
         char * token = strtok(task[i], ",");
-        while (token)
-        {   
+        while (token) {   
             char temp[100];
             strcpy(temp, token);
             int length = strlen(temp);
