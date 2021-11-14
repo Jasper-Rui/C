@@ -9,6 +9,12 @@
 //header file, all necessary libraries are added inside header file
 #include "A4.h"
 
+//initialize a 2d array to store the task and a global variable i start with 0
+char task[150][150];
+int task_number = 0;
+
+char info[150][150];
+int info_count = 0;
 /*
  * Function:  make_Node
  * --------------------
@@ -148,12 +154,6 @@ Node * searchSJ (LinkedList * linkedlist, int previous_run_time){
     return node_copy;
 }
 
-//initialize a 2d array to store the task and a global variable i start with 0
-char task[100][100];
-int task_number = 0;
-
-char info[100][100];
-int info_count = 0;
 
 /*
  * Function:  FCFS
@@ -218,6 +218,7 @@ void * FCFS (FILE * file_pointer) {
  */
 
 void * RR (FILE * file_pointer) {
+    //if there is only 1 task, rr will keep running this task
     assert(file_pointer);
     int time_quantum = 4;
 
@@ -227,7 +228,7 @@ void * RR (FILE * file_pointer) {
     //read all test arrive under 8
     //if two or more task arrive at the same time, new task should be placed to linkedlist first
 
-    fputs("\nRR\n", file_pointer);
+    fputs("\nRR:\n", file_pointer);
     LinkedList * linkedlist = llist_initialize();
     
     int task_run_time = 0;
@@ -243,7 +244,6 @@ void * RR (FILE * file_pointer) {
         wait_time_for_task[i] = 0;
         last_arrive_time[i] = 0;
     }
-
     while(1){   
         if(task_read_count == 0){
             llist_add_node(linkedlist, info[0], atoi(info[1]), atoi(info[2]));
@@ -287,8 +287,12 @@ void * RR (FILE * file_pointer) {
                 index = (*(node->task_name + 1) - '0') * 10 + *(node->task_name + 2) - '0';
             } 
             //update run time
-            if(linkedlist->first->run_time > time_quantum) task_run_time = time_quantum;
+            if(linkedlist->first->run_time > time_quantum && linkedlist->size > 1) task_run_time = time_quantum;
             else task_run_time = linkedlist->first->run_time;
+
+            if(linkedlist->size == 1 && task_read_count == info_count){
+                task_run_time = linkedlist->first->run_time;
+            } 
 
             fprintf(file_pointer, "%s\t%d\t%d\n", linkedlist->first->task_name, task_wait_time, task_wait_time + task_run_time);
             
@@ -303,7 +307,6 @@ void * RR (FILE * file_pointer) {
             }
 
             last_arrive_time[index] = task_wait_time;
-
             task_wait_time += task_run_time;
             current_time += task_run_time;
 
@@ -317,7 +320,7 @@ void * RR (FILE * file_pointer) {
                 }
             }
 
-            if(linkedlist->first->run_time - task_run_time != 0){
+            if(linkedlist->first->run_time - task_run_time != 0 && linkedlist->first->run_time - task_run_time > 0){
                 llist_add_node(linkedlist, linkedlist->first->task_name, linkedlist->first->arrtive_time, linkedlist->first->run_time - task_run_time);
                 llist_remove(linkedlist, linkedlist->first->task_name);
             }
@@ -345,7 +348,7 @@ void * RR (FILE * file_pointer) {
 
 void * NSJF (FILE * file_pointer) {
     assert(file_pointer);
-    fputs("\nNPSJF\n", file_pointer);
+    fputs("\nNSJF:\n", file_pointer);
     int count = 0;
     LinkedList * linkedlist = llist_initialize();
 
@@ -355,9 +358,9 @@ void * NSJF (FILE * file_pointer) {
     }
 
     //create a 2d array to store the info
-    char task_order[100][100];
+    char task_order[150][150];
 
-    int time[10];
+    int time[50];
     int time_count = 1;
 
     //first task
@@ -418,20 +421,29 @@ void  * PSJF (FILE * file_pointer) {
     int count = 0;
     LinkedList * linkedlist = llist_initialize();
 
-    while(count < info_count){
-        llist_add_node(linkedlist, info[count], atoi(info[count + 1]), atoi(info[count + 2]));
-        count += 3;
+    //intialize a run_time, compare it with new arrive tasks
+    int run_time = 0;
+    llist_add_node(linkedlist, info[count], atoi(info[count + 1]), atoi(info[count + 2]));
+    count += 3;
+
+    while (count < info_count) {
+        int next_task_arrive_time_difference = atoi(info[count + 1]) - run_time;
+        
+        if(atoi(info[count + 2]) > linkedlist->first->run_time - next_task_arrive_time_difference){
+            llist_add_node(linkedlist, info[count], atoi(info[count + 1]), atoi(info[count + 2]));
+        }
+        else{
+
+        }
+        break;
+
     }
 
-    while (linkedlist->size){
-        break;
-    }
 
     free(linkedlist);
     linkedlist = NULL;
     return file_pointer;
 }
-
 
 int main () {
     
@@ -443,8 +455,8 @@ int main () {
         return(-1);
     }
 
-    while (fgets(task[task_number++], 100, fp) != NULL) {
-        ;
+    while (fgets(task[task_number++], 100, fp) != NULL) { 
+        ; 
     }
     fclose(fp);
     fp = NULL;
