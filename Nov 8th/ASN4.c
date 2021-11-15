@@ -144,11 +144,12 @@ bool llist_remove(LinkedList *linkedlist, char * task_name){
     }
     else{
         //this part is a little buggy, but this part is never used in my code
-        Node * node = linkedlist->last;
-        while(strcmp(task_name, node->prev->task_name) != 0){
-            node = node->prev;
+        Node * node = linkedlist->first;
+        while(strcmp(task_name, node->task_name) != 0){
+            node = node->next;
         }
-        node->prev = node->prev->prev;
+        node->prev->next = node->next;
+        node->next->prev = node->prev;
         linkedlist->size--;   
     }
     return true;
@@ -160,7 +161,7 @@ Node * searchSJ (LinkedList * linkedlist, int previous_run_time){
     //find shortest job
     //use task name is better, since there may exist task coming in with the same run time
     for(int i = 0; i < linkedlist->size; i++){
-        if(node->arrtive_time < previous_run_time){
+        if(node->arrtive_time <= previous_run_time){
             int temp = node->run_time;
             if(temp < shortest_time){
                 shortest_time = temp;
@@ -443,31 +444,79 @@ void  * PSJF (FILE * file_pointer) {
     assert(file_pointer);
     fputs("\nPSJF\n", file_pointer);
     int count = 0;
+    int task_arrive_time[50] = { 0 };
+    int task_run_time[50] = { 0 };
+    int final_wait_time[50] = { 0 };
     LinkedList * linkedlist = llist_initialize();
-    llist_add_node(linkedlist, info[count], atoi(info[count + 1]), atoi(info[count + 2]));
-    count += 3;
-
-    int current_time = 0;
-    int next_task_arrive_time = 0;
-    int prev_task_arrive_time = linkedlist->first->arrtive_time;
-    while (count < info_count) {
-        //time difference between new task and previous task
-        next_task_arrive_time = atoi(info[count + 1]) - prev_task_arrive_time;
-        if(linkedlist->first->run_time - next_task_arrive_time > atoi(info[count + 2])) {
-            fprintf(file_pointer, "%s\t%d\t%d\n", linkedlist->first->task_name, current_time, current_time + next_task_arrive_time);
-            current_time += next_task_arrive_time;
-            prev_task_arrive_time = atoi(info[count + 1]);
-            llist_add_front(linkedlist, info[count], atoi(info[count + 1]), atoi(info[count + 2]));
-            count += 3;
+    while(count < info_count){
+        int index = 0;
+        if(strlen(info[count]) == 2){
+            index = *(info[count] + 1) - '0';
         }
-        else {
-            ;
+        else if (strlen(info[count]) == 3) {
+            index = (*(info[count] + 1) - '0') * 10 + *(info[count] + 2) - '0';
         }
-
-        break;
+        final_wait_time[index] -= atoi(info[count + 1]);
+        llist_add_node(linkedlist, info[count], atoi(info[count + 1]), atoi(info[count + 2]));
+        count += 3;
     }
 
+    int run_time = 0;
+    int current_time = 0;
+    Node * temp = linkedlist->first;
+    Node * node = searchSJ(linkedlist, current_time);
 
+    while (linkedlist->size) {
+        if((strcmp(node->task_name, temp->task_name) == 0) && (run_time < node->run_time)) {
+            run_time++;
+            current_time++;
+        }
+        //there are two situation
+        //first if node is equal to temp, so node is finished
+        else if((strcmp(node->task_name, temp->task_name) == 0) && (run_time == node->run_time)) {
+            int index = 0;
+            if(strlen(node->task_name) == 2){
+                index = *(node->task_name + 1) - '0';
+            }
+            else if (strlen(node->task_name) == 3) {
+                index = (*(node->task_name + 1) - '0') * 10 + *(node->task_name + 2) - '0';
+            }
+            final_wait_time[index] += current_time - run_time - task_arrive_time[index] - task_run_time[index];
+            task_arrive_time[index] = current_time - run_time;
+            task_run_time[index] = run_time;
+            fprintf(file_pointer, "%s\t%d\t%d\n", node->task_name, current_time - run_time, current_time);
+            llist_remove(linkedlist, node->task_name);
+            if(linkedlist->size != 0) temp = searchSJ(linkedlist, current_time);
+            run_time = 0;
+        }
+        //second is if the node is different from task, which means
+        //a new shortest job is found, put previous data into file
+        else if ((strcmp(node->task_name, temp->task_name) != 0) && (run_time < temp->run_time)) {
+            int index = 0;
+            if(strlen(temp->task_name) == 2){
+                index = *(temp->task_name + 1) - '0';
+            }
+            else if (strlen(temp->task_name) == 3) {
+                index = (*(temp->task_name + 1) - '0') * 10 + *(temp->task_name + 2) - '0';
+            }
+            final_wait_time[index] += current_time - run_time - task_arrive_time[index] - task_run_time[index];
+            task_arrive_time[index] = current_time - run_time;
+            task_run_time[index] = run_time;
+            fprintf(file_pointer, "%s\t%d\t%d\n", temp->task_name, current_time - run_time, current_time);
+            llist_add_node(linkedlist, temp->task_name, temp->arrtive_time, temp->run_time - run_time);
+            llist_remove(linkedlist, temp->task_name);
+            run_time = 0;
+            temp = node; 
+        }
+        if(linkedlist->size != 0) node = searchSJ(linkedlist, current_time);
+    }
+
+    double average_time  = 0.00;
+    for(int i = 0; i < info_count / 3; i++) {
+        fprintf(file_pointer, "Waiting Time %s: %d\n", info[i * 3 + 1], final_wait_time[i + 1]);
+        average_time += final_wait_time[i + 1];
+    }
+    fprintf(file_pointer, "Average Waiting Time: %.2f\n", average_time/(info_count / 3));
 
     free(linkedlist);
     linkedlist = NULL;
@@ -478,7 +527,7 @@ int main () {
     
     /* following lines before flose(fp) is the read the TaskSpec file*/
     FILE * fp = NULL;
-    fp = fopen("TaskSpec.txt", "r"); 
+    fp = fopen("TaskSpec2.txt", "r"); 
     if(fp == NULL) {
         perror("Error opening file");
         return(-1);
@@ -512,7 +561,7 @@ int main () {
     //after this step, all the information are splited into name, arrive time and run time
 
     FILE * output_fp = NULL;
-    output_fp = fopen("Output.txt", "w+"); 
+    output_fp = fopen("Output2.txt", "w+"); 
     if(output_fp == NULL) {
         perror("Error creating file");
         return(-1);
@@ -528,4 +577,5 @@ int main () {
     output_fp = NULL;
     //close file pointer and set variable to NULL
     return 0;
-}
+
+}//GG!
