@@ -30,6 +30,8 @@ LinkedList* llist_initialize();
 
 bool llist_add_node(LinkedList * list ,char * task_name, int arrive_time, int run_time);
 
+bool llist_add_front(LinkedList * linkedlist, char * task_name, int arrive_time, int run_time);
+
 bool llist_remove(LinkedList *linkedList, char * task_name);
 
 void * FCFS (FILE* filename);

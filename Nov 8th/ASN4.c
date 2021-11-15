@@ -90,6 +90,30 @@ bool llist_add_node(LinkedList * linkedlist, char * task_name, int arrive_time, 
     return true;
 }
 
+
+
+/*
+ * Function:  llist_add_frond
+ * --------------------
+ *  linkedlist: linked list pointer
+ *  command: command string to be added
+ *  pid: integer pid to be added
+ * 
+ *  returns: if the new node add successfully
+ */
+bool llist_add_front(LinkedList * linkedlist, char * task_name, int arrive_time, int run_time){
+    assert(linkedlist);
+    assert(task_name);
+    Node *node = make_Node(task_name, arrive_time, run_time);
+    node->next = linkedlist->first;
+    node->prev = NULL;
+    linkedlist->first->prev = node;
+    linkedlist->first = node;
+    return true;
+}
+
+
+
 /*
  * Function:  llist_remove_last
  * --------------------
@@ -420,63 +444,31 @@ void  * PSJF (FILE * file_pointer) {
     fputs("\nPSJF\n", file_pointer);
     int count = 0;
     LinkedList * linkedlist = llist_initialize();
-
     llist_add_node(linkedlist, info[count], atoi(info[count + 1]), atoi(info[count + 2]));
     count += 3;
-    //printf("%d\n", linkedlist->size);
 
-    //core in this algorithm is to keep looking for shortest task under current run time
-    //steps:
-    //first read the very first task
-    //run till the second task coming in
-    //then compare the remaining time required and the new task run time
-    //if shorter than new task, keep running and check for next task
-    //if not, stop current task and run the shortest task
-
-    //intialize a run_time, compare it with new arrive tasks
-    int current_run_time = 0;
-    int wait_time = 0;
-
-    //the statement is to sort the tasks, if all the tasks arrived and sorted
-    //just run 
-
-    //two stage
-    //first is tasks are still coming
-    //second is we have read all tasks
-    while (count != info_count) {
-        current_run_time += atoi(info[count + 1]);
-        //count + 1 is the next task arrive time
-
-        if(linkedlist->first->run_time - current_run_time > atoi(info[count + 2])){
-            fprintf(file_pointer, "%s\t%d\t%d\n", linkedlist->first->task_name, wait_time, current_run_time);
-            //means that next task is shorter than current
-            //stop current and put new task at frond
-            linkedlist->first->run_time = atoi(info[count + 1]);
-            llist_add_node(linkedlist, info[count], atoi(info[count + 1]), atoi(info[count + 2]));
-            llist_add_node(linkedlist, linkedlist->first->task_name, linkedlist->first->arrtive_time, linkedlist->first->run_time - current_run_time);
-            llist_remove(linkedlist, linkedlist->first->task_name);
-            wait_time += current_run_time;
+    int current_time = 0;
+    int next_task_arrive_time = 0;
+    int prev_task_arrive_time = linkedlist->first->arrtive_time;
+    while (count < info_count) {
+        //time difference between new task and previous task
+        next_task_arrive_time = atoi(info[count + 1]) - prev_task_arrive_time;
+        if(linkedlist->first->run_time - next_task_arrive_time > atoi(info[count + 2])) {
+            fprintf(file_pointer, "%s\t%d\t%d\n", linkedlist->first->task_name, current_time, current_time + next_task_arrive_time);
+            current_time += next_task_arrive_time;
+            prev_task_arrive_time = atoi(info[count + 1]);
+            llist_add_front(linkedlist, info[count], atoi(info[count + 1]), atoi(info[count + 2]));
             count += 3;
         }
-        else{
-            llist_add_node(linkedlist, info[count], atoi(info[count + 1]), atoi(info[count + 2]));
-            count += 3;
+        else {
+            ;
         }
-        fprintf(file_pointer, "%s\t%d\t%d\n", linkedlist->first->task_name, wait_time, wait_time + linkedlist->first->run_time);
-        wait_time += linkedlist->first->run_time;
-        llist_remove(linkedlist, linkedlist->first->task_name);
-        
-        if(linkedlist->size == 0){
-            break;
-        }
-    }
 
-    
-    while (info[count + 1] >= current_run_time) {
         break;
     }
 
-    
+
+
     free(linkedlist);
     linkedlist = NULL;
     return file_pointer;

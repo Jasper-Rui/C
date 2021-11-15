@@ -37,6 +37,3 @@ Average Waiting Time: 7.75
 
 PSJF
 T1	0	1
-T2	1	5
-T1	5	5
-T3	5	14

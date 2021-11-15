@@ -1,0 +1,152 @@
+ //printf("%d\n", linkedlist->size);
+
+    //core in this algorithm is to keep looking for shortest task under current run time
+    //steps:
+    //first read the very first task
+    //run till the second task coming in
+    //then compare the remaining time required and the new task run time
+    //if shorter than new task, keep running and check for next task
+    //if not, stop current task and run the shortest task
+
+    //intialize a run_time, compare it with new arrive tasks
+    int current_run_time = 0;
+    int wait_time = 0;
+
+    //the statement is to sort the tasks, if all the tasks arrived and sorted
+    //just run 
+
+    //two stage
+    //first is tasks are still coming
+    //second is we have read all tasks
+    while (count != info_count) {
+        current_run_time += atoi(info[count + 1]);
+        //count + 1 is the next task arrive time
+
+        if(linkedlist->first->run_time - current_run_time > atoi(info[count + 2])){
+            fprintf(file_pointer, "%s\t%d\t%d\n", linkedlist->first->task_name, wait_time, current_run_time);
+            //means that next task is shorter than current
+            //stop current and put new task at frond
+            linkedlist->first->run_time = atoi(info[count + 1]);
+            llist_add_node(linkedlist, info[count], atoi(info[count + 1]), atoi(info[count + 2]));
+            llist_add_node(linkedlist, linkedlist->first->task_name, linkedlist->first->arrtive_time, linkedlist->first->run_time - current_run_time);
+            llist_remove(linkedlist, linkedlist->first->task_name);
+            wait_time += current_run_time;
+            count += 3;
+        }
+        else{
+            llist_add_node(linkedlist, info[count], atoi(info[count + 1]), atoi(info[count + 2]));
+            count += 3;
+        }
+        fprintf(file_pointer, "%s\t%d\t%d\n", linkedlist->first->task_name, wait_time, wait_time + linkedlist->first->run_time);
+        wait_time += linkedlist->first->run_time;
+        llist_remove(linkedlist, linkedlist->first->task_name);
+        
+        if(linkedlist->size == 0){
+            break;
+        }
+    }
+
+    
+    while (info[count + 1] >= current_run_time) {
+        break;
+    }
+
+
+
+
+
+
+
+        llist_add_node(linkedlist, info[count], atoi(info[count + 1]), atoi(info[count + 2]));
+    count += 3;
+
+    //core in this algorithm is to keep looking for shortest task under current run time
+    //steps:
+    //first read the very first task
+    //run till the second task coming in
+    //then compare the remaining time required and the new task run time
+    //if shorter than new task, keep running and check for next task
+    //if not, stop current task and run the shortest task
+
+    //intialize a run_time, compare it with new arrive tasks
+    int current_run_time = 0;
+    int wait_time = 0;
+    int task_wait_time[50] = { 0 };
+
+    //two stage
+    //first is tasks are still coming
+    //second is we have read all tasks
+    while (count != info_count) {
+        current_run_time += atoi(info[count + 1]);
+        //count + 1 is the next task arrive time
+
+        if(linkedlist->first->run_time - current_run_time > atoi(info[count + 2])){
+            //means that next task is shorter than current
+            //stop current and put new task at frond
+            fprintf(file_pointer, "%s\t%d\t%d\n", linkedlist->first->task_name, wait_time, current_run_time);
+            wait_time += atoi(info[count + 1]);
+            int index = 0;
+
+            if(strlen(node->task_name) == 2){
+                index = *(node->task_name + 1) - '0';
+            }
+            else if (strlen(node->task_name) == 3) {
+                index = (*(node->task_name + 1) - '0') * 10 + *(node->task_name + 2) - '0';
+            } 
+            task_wait_time[index] += wait_time - linkedlist->first->arrive_time;
+
+            linkedlist->first->run_time = atoi(info[count + 1]);
+            llist_add_node(linkedlist, info[count], atoi(info[count + 1]), atoi(info[count + 2]));
+            llist_add_node(linkedlist, linkedlist->first->task_name, linkedlist->first->arrtive_time, linkedlist->first->run_time - current_run_time);
+            llist_remove(linkedlist, linkedlist->first->task_name);
+            wait_time += current_run_time;
+            count += 3;
+        }
+        else{
+            llist_add_node(linkedlist, info[count], atoi(info[count + 1]), atoi(info[count + 2]));
+            count += 3;
+        }
+        fprintf(file_pointer, "%s\t%d\t%d\n", linkedlist->first->task_name, wait_time, wait_time + linkedlist->first->run_time);
+        wait_time += linkedlist->first->run_time;
+        llist_remove(linkedlist, linkedlist->first->task_name);
+        
+        if(linkedlist->size == 0){
+            break;
+        }
+    }
+
+    
+    while (info[count + 1] >= current_run_time) {
+        break;
+    }
+
+    
+
+        while (linkedlist->size) {
+        next_task_arrive_time = atoi(info[count + 1]);
+        //info[count + 1] is next task arrive time
+        current_run_time += next_task_arrive_time;
+        if(linkedlist->first->run_time - current_run_time > atoi(info[count + 2])){
+            int index = 0;
+            if(strlen(linkedlist->first->task_name) == 2){
+                index = *(linkedlist->first->task_name + 1) - '0';
+            }
+            else if (strlen(linkedlist->first->task_name) == 3) {
+                index = (*(linkedlist->first->task_name + 1) - '0') * 10 + *(linkedlist->first->task_name + 2) - '0';
+            } 
+            task_wait_time[index] = 0;
+
+            //info[count + 2] is the next task run time
+            fprintf(file_pointer, "%s\t%d\t%d\n", linkedlist->first->task_name, wait_time, wait_time + current_run_time);
+            //add new task to frond and add current task to later
+            llist_add_node(linkedlist, info[count], atoi(info[count + 1]), atoi(info[count + 2]));
+            llist_add_node(linkedlist, linkedlist->first->task_name, linkedlist->first->arrtive_time, linkedlist->first->run_time - current_run_time);
+            llist_remove(linkedlist, linkedlist->first->task_name);
+            count += 3;
+            wait_time += current_run_time;
+        }
+        else {
+            ;
+        }
+        break;
+    }
