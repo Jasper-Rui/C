@@ -31,6 +31,7 @@ int main () {
             aim -= value;
         }
         
+        
         else if(strcmp("forward", array) == 0){
             horizontal += value;
             depth = depth + aim * value;
