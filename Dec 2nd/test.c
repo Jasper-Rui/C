@@ -36,7 +36,7 @@ int main () {
             horizontal += value;
             depth = depth + aim * value;
         }
-        //printf("round %d %d\n", x, y);
+        printf("round %d %d\n", x, y);
     }
     printf("%d %d %d", aim, horizontal, depth);
 
